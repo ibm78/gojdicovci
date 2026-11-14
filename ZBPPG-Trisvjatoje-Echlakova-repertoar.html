@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repertoár – Gojdičovci</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f5f4ee; color: #203a30; font: 1rem/1.5 "DM Sans", system-ui, sans-serif; }
+  main { max-width: 58rem; margin: auto; padding: 1rem; display: grid; gap: 1rem; }
+  article { background: white; border: 1px solid #d9e0d6; border-left: .35rem solid #25513d; border-radius: .75rem; padding: clamp(1rem, 4vw, 2rem); }
+  h2 { font-family: Georgia, serif; font-size: clamp(1.65rem, 5vw, 2.4rem); line-height: 1.15; margin: 0 0 .4rem; }
+  p { margin: 0 0 1.25rem; color: #485a50; font-size: 1.1rem; }
+  nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); gap: .65rem; }
+  a { display: flex; align-items: center; justify-content: center; gap: .55rem; min-height: 3.5rem; padding: .5rem .75rem; border-radius: .5rem; border: 1px solid #a3b5a9; color: #203a30; text-decoration: none; font-weight: 650; }
+  a:hover { background: #e9f0ea; }
+  a:focus-visible { outline: 3px solid #165a9e; outline-offset: 3px; }
+  a.play { background: #25513d; color: white; border-color: #25513d; }
+  a.play:hover { background: #193e2c; }
+  a span { font-size: 1.4rem; line-height: 1; }
+</style>
+</head>
+<body>
+<main aria-label="Repertoár zboru">
+  <article aria-labelledby="pod-tvoju-milost">
+    <h2 id="pod-tvoju-milost">ZBPPG-Trisvjatoje-Echlakova</h2>
+    
+    <nav aria-label="ZBPPG-Trisvjatoje-Echlakova">
+      <a href="ZBPPG-Trisvjatoje-Echlakova.pdf" target="_blank" rel="noopener"><span aria-hidden="true">▤</span> Náhľad PDF</a>
+      <a href="ZBPPG-Trisvjatoje-Echlakova.pdf" download="ZBPPG-Trisvjatoje-Echlakova.pdf"><span aria-hidden="true">⤓</span> Stiahnuť PDF</a>
+      <a class="play" href="ZBPPG-Trisvjatoje-Echlakova-player.html" target="_blank" rel="noopener"><span aria-hidden="true">▶</span> Prehrať</a>
+    </nav>
+  </article>
+</main>
+</body>
+</html>
