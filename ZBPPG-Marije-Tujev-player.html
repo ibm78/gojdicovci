@@ -66,9 +66,9 @@ tspan { white-space: pre; }
 <tspan>Marije, Mati Božija</tspan>
 </text>
 </g>
-<g transform="translate(125.6047, 16.8687)">
+<g transform="translate(107.8502, 16.8687)">
 <text font-family="serif" font-size="2.2001" text-anchor="start" fill="currentColor">
-<tspan>Konstantin Tujev</tspan>
+<tspan>Константин Туев / Konstantin Tujev</tspan>
 </text>
 </g>
 <g transform="translate(89.1097, 25.9658)">
@@ -6092,16 +6092,22 @@ function begin() {
   updatePlaybackControls();
   tick();
 }
+async function startAudioClock(context) {
+  const startingTime = context.currentTime;
+  const deadline = performance.now() + 2500;
+  while (performance.now() < deadline) {
+    if (context.state === 'running' && context.currentTime > startingTime) return;
+    await new Promise(resolve => setTimeout(resolve, 25));
+  }
+  throw new Error('Zvukový výstup sa nespustil.');
+}
+
 async function togglePlayback(){
   if(playing){pause();return;}
   if(busy) return;
   busy=true;
   try{
-    document.body.classList.add('following');
-    const target = beat >= length ? 0 : beat;
-    const bar = 1 + Math.max(0, bars.findLastIndex(start => start <= target));
-    followRow(bar, true);
-    if(!audio){
+    if(!audio || audio.state === 'closed'){
       audio=new (window.AudioContext || window.webkitAudioContext)();
       voices.forEach(voice=>{
         voice.gain=audio.createGain();
@@ -6109,7 +6115,22 @@ async function togglePlayback(){
         voice.gain.connect(audio.destination);
       });
     }
-    await audio.resume();
+    // Start a short silent buffer during the click, before decoding or scrolling.
+    const context = audio;
+    const wake = context.createBufferSource();
+    wake.buffer = context.createBuffer(1, Math.ceil(context.sampleRate * .1), context.sampleRate);
+    wake.connect(context.destination);
+    wake.onended = () => wake.disconnect();
+    const resumed = context.resume();
+    wake.start();
+    play.textContent = 'Spúšťam zvuk…';
+
+    document.body.classList.add('following');
+    const target = beat >= length ? 0 : beat;
+    const bar = 1 + Math.max(0, bars.findLastIndex(start => start <= target));
+    followRow(bar, true);
+
+    await Promise.all([resumed, startAudioClock(context)]);
     if (pianoSamples.length && !piano) {
       play.textContent = 'Načítavam klavír…';
       piano = await Promise.all(pianoSamples.map(async ([pitch, encoded]) => {
@@ -6117,10 +6138,11 @@ async function togglePlayback(){
         return {pitch, buffer: await audio.decodeAudioData(contents.buffer)};
       }));
     }
+    await startAudioClock(context);
     byId('error').hidden=true;
     begin();
   } catch {
-    updatePlaybackControls();
+    pause();
     const error=byId('error');
     error.hidden=false;
     error.textContent='Zvuk sa nepodarilo spustiť. Skúste stlačiť Prehrať znova.';
