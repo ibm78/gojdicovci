@@ -6549,6 +6549,20 @@ groups.forEach((name,index)=>{
 function now() {
   return Math.min(length,beat+Math.max(0,audio.currentTime-start)*rate);
 }
+function followNotes(notes) {
+  if (!notes.length || score.scrollWidth <= score.clientWidth) return;
+  const visibleLeft = score.getBoundingClientRect().left + score.clientLeft;
+  const inset = score.clientWidth * .12;
+  const positions = notes.map(note => note.getBoundingClientRect());
+  const left = Math.min(...positions.map(rect => rect.left));
+  const right = Math.max(...positions.map(rect => rect.right));
+  const visibleRight = visibleLeft + score.clientWidth;
+  if (left >= visibleLeft + inset && right <= visibleRight - inset) return;
+
+  // Leave room for upcoming notes while keeping the sounding notes in view.
+  const lead = Math.min(score.clientWidth * .25, Math.max(inset, score.clientWidth - (right - left) - inset));
+  score.scrollLeft += left - visibleLeft - lead;
+}
 function draw(value, follow=false) {
   position.value=value;
   const bar=1+Math.max(0,bars.findLastIndex(start=>start<=value));
@@ -6557,12 +6571,17 @@ function draw(value, follow=false) {
     currentBar = bar;
     byId('bar').textContent='Takt '+bar+' / '+bars.length;
   }
+  const sounding = [];
   for (const {node, timing: [from, to, track]} of noteHeads) {
     const voice = voices[toGroup[track]];
-    node.classList.toggle('active', playing && value >= from && value < to &&
-      !voice.muted && voice.volume > 0);
+    const active = playing && value >= from && value < to && !voice.muted && voice.volume > 0;
+    node.classList.toggle('active', active);
+    if (follow && active) sounding.push(node);
   }
-  if (follow) followRow(bar);
+  if (follow) {
+    followRow(bar);
+    followNotes(sounding);
+  }
 }
 function tick() {
   if(!playing) return;
