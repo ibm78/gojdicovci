@@ -1,3 +1,18 @@
+const loadedTime = document.getElementById('player-loaded');
+if (loadedTime) {
+  const timestampFormat = new Intl.DateTimeFormat('sk-SK', {
+    dateStyle: 'medium', timeStyle: 'medium', timeZone: 'Europe/Bratislava'
+  });
+  const updateLoadTime = date => {
+    loadedTime.dateTime = date.toISOString();
+    loadedTime.textContent = timestampFormat.format(date);
+  };
+  updateLoadTime(new Date(performance.timeOrigin));
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) updateLoadTime(new Date());
+  });
+}
+
 'use strict';
 const {tracks, pianoSamples, bars, bpm, toGroup} = JSON.parse(document.getElementById('song-data').textContent);
 const assetRoot = new URL('.', document.currentScript.src);
