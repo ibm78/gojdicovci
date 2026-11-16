@@ -1,0 +1,37 @@
+*{box-sizing:border-box}
+body{margin:0;color:#202923;background:transparent;font:1rem/1.55 "DM Sans",system-ui,sans-serif}
+header{background:#203a30;color:#fff;padding:2.5rem max(1rem,calc((100% - 66rem)/2));}
+h1,h2,h3{font-family:Georgia,serif;line-height:1.2}
+h1{font-size:clamp(2.5rem,8vw,5rem);margin:0}
+header p{margin:.5rem 0 1.5rem}
+nav{display:flex;flex-wrap:wrap;gap:1.2rem}
+nav a{color:#fff}
+main{max-width:68rem;margin:auto;padding:0 1rem 2rem}
+section{margin:2.5rem 0}
+h2{font-size:2rem;margin-bottom:.7rem}
+article,.controls{background:#fff;border:1px solid #dce2d9;border-radius:12px;padding:1rem}
+article h3{margin:0 0 .4rem}
+a{color:#205c43}
+.control-row{display:flex;align-items:center;flex-wrap:wrap;gap:.8rem}
+button{font:inherit;border:1px solid #53735f;border-radius:8px;background:#fff;color:#203a30;padding:.35rem .7rem;cursor:pointer}
+#play,button[aria-pressed=true]{background:#25513d;color:white}
+input[type=range]{accent-color:#2e694d;min-width:4em}
+#position{flex:1}
+.mixer{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.7rem;margin:1rem 0 0}
+.voice{padding:.6rem;background:#eef2ec;border-radius:8px}
+.voice label{display:block;font-weight:650}
+.voice input{width:100%}
+.voice button{width:100%}
+.sheet{margin-top:1rem;overflow:auto;background:white;border:1px solid #dce2d9;border-radius:12px;padding:.5rem}
+.sheet>svg{display:block;width:100%;min-width:650px;height:auto}
+.measure{cursor:pointer}
+[data-note].active{color:#d31221!important}
+body.embed header,body.embed #uvod,body.embed #repertoar,body.embed #informacie{display:none}
+body.embed #nacvik{margin:1rem 0}
+
+#floating-controls{position:fixed;z-index:10;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));display:grid;gap:.5rem}
+#floating-controls[hidden]{display:none}
+#floating-controls button{width:3rem;height:3rem;padding:0;border-radius:50%;background:rgba(32,58,48,.72);color:#fff;font-size:1.35rem;line-height:1;box-shadow:0 2px 8px #0003}
+#floating-controls button:hover,#floating-controls button:focus-visible{background:#203a30}
+#floating-controls button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+body.following{padding-bottom:100vh}
