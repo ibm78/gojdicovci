@@ -183,21 +183,41 @@ function begin() {
   updatePlaybackControls();
   tick();
 }
-async function startAudioClock(context) {
-  const startingTime = context.currentTime;
-  const deadline = performance.now() + 2500;
-  while (performance.now() < deadline) {
-    if (context.state === 'running' && context.currentTime > startingTime) return;
-    await new Promise(resolve => setTimeout(resolve, 25));
+async function fetchPianoSamples() {
+  return Promise.all(pianoSamples.map(async pitch => {
+    const response = await fetch(new URL('klavir/'+pitch+'.m4a', assetRoot), {
+      signal: AbortSignal.timeout(20000)
+    });
+    if (!response.ok) throw new Error('Klavírna vzorka: HTTP '+response.status);
+    return {pitch, bytes: await response.arrayBuffer()};
+  }));
+}
+
+let sampleDownload = pianoSamples.length ? fetchPianoSamples().catch(() => null) : null;
+
+async function waitForAudioOutput(context, wake) {
+  try {
+    const startingTime = context.currentTime;
+    const deadline = performance.now() + 8000;
+    while (performance.now() < deadline) {
+      if (context.state === 'running' && context.currentTime > startingTime) return;
+      await new Promise(resolve => setTimeout(resolve, 25));
+    }
+    throw new Error('Zvukový výstup sa nespustil.');
+  } finally {
+    wake.stop();
+    wake.disconnect();
   }
-  throw new Error('Zvukový výstup sa nespustil.');
 }
 
 async function togglePlayback(){
   if(playing){pause();return;}
   if(busy) return;
   busy=true;
-  try{
+  const error = byId('error');
+  error.hidden = true;
+  play.textContent = 'Spúšťam zvuk…';
+  try {
     if(!audio || audio.state === 'closed'){
       audio=new (window.AudioContext || window.webkitAudioContext)();
       voices.forEach(voice=>{
@@ -206,38 +226,37 @@ async function togglePlayback(){
         voice.gain.connect(audio.destination);
       });
     }
-    // Start a short silent buffer during the click, before decoding or scrolling.
+    // Request output and queue silence while still handling the user's click.
     const context = audio;
     const wake = context.createBufferSource();
-    wake.buffer = context.createBuffer(1, Math.ceil(context.sampleRate * .1), context.sampleRate);
+    wake.buffer = context.createBuffer(1, 128, context.sampleRate);
+    wake.loop = true;
     wake.connect(context.destination);
-    wake.onended = () => wake.disconnect();
     const resumed = context.resume();
     wake.start();
-    play.textContent = 'Spúšťam zvuk…';
+
+    async function preparePiano() {
+      if (!pianoSamples.length || piano) return;
+      const samples = (await sampleDownload) ?? await fetchPianoSamples();
+      piano = await Promise.all(samples.map(async ({pitch, bytes})=>({
+        pitch, buffer: await context.decodeAudioData(bytes.slice(0))
+      })));
+      sampleDownload = null;
+    }
+
+    await Promise.all([resumed, waitForAudioOutput(context, wake), preparePiano()]);
+    if (context.state !== 'running') throw new Error('Zvukový výstup bol prerušený.');
 
     document.body.classList.add('following');
     const target = beat >= length ? 0 : beat;
     const bar = 1 + Math.max(0, bars.findLastIndex(start => start <= target));
     followRow(bar, true);
-
-    await Promise.all([resumed, startAudioClock(context)]);
-    if (pianoSamples.length && !piano) {
-      play.textContent = 'Načítavam klavír…';
-      piano = await Promise.all(pianoSamples.map(async pitch => {
-        const response = await fetch(new URL('klavir/'+pitch+'.m4a', assetRoot));
-        if (!response.ok) throw new Error('Klavírna vzorka: HTTP '+response.status);
-        return {pitch, buffer: await audio.decodeAudioData(await response.arrayBuffer())};
-      }));
-    }
-    await startAudioClock(context);
-    byId('error').hidden=true;
     begin();
-  } catch {
+  } catch (cause) {
     pause();
-    const error=byId('error');
     error.hidden=false;
     error.textContent='Zvuk sa nepodarilo spustiť. Skúste stlačiť Prehrať znova.';
+    console.warn('Gojdičovci: štart prehrávania zlyhal.', cause);
   } finally { busy=false; }
 }
 play.onclick = floatingPlay.onclick = togglePlayback;
