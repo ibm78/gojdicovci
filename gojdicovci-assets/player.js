@@ -14,6 +14,21 @@ if (loadedTime) {
 }
 
 'use strict';
+// Support return links already present in published players.
+for (const control of document.querySelectorAll('button[data-close-player], a.return-link')) {
+  const isFloating = control.closest('#floating-controls');
+  if (isFloating) {
+    control.setAttribute('aria-label', 'Ukončiť');
+    control.title = 'Ukončiť';
+  } else {
+    control.textContent = 'Ukončiť';
+  }
+  control.addEventListener('click', event => {
+    event.preventDefault();
+    window.close();
+  });
+}
+
 const {tracks, pianoSamples, bars, bpm, toGroup} = JSON.parse(document.getElementById('song-data').textContent);
 const assetRoot = new URL('.', document.currentScript.src);
 let piano;
