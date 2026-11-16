@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="gojdicovci-assets/player.css">
 <main><section id="nacvik"><h3>Bohorodice Divo, radujsja</h3><p>Anton Viskov</p>
 <div class="controls">
-<div class="control-row"><button id="play">Prehrať</button><button id="reset">Od začiatku</button><label for="tempo">Tempo</label><input id="tempo" type="range" min="50" max="150" value="100" step="5"><output id="speed" for="tempo">100 % · 60 BPM</output></div>
+<div class="control-row"><button id="play">Prehrať</button><a class="return-link" href="https://sites.google.com/view/gojdicovci/reperto%C3%A1r" target="_top">Späť na repertoár</a><button id="reset">Od začiatku</button><label for="tempo">Tempo</label><input id="tempo" type="range" min="50" max="150" value="100" step="5"><output id="speed" for="tempo">100 % · 60 BPM</output></div>
 <div class="control-row"><label for="position">Poloha</label><input id="position" type="range" min="0" max="83" step=".01" value="0"><output id="bar" for="position">Takt 1 / 22</output></div>
 <p>Zvuk: Grand Piano</p><div id="mixer" class="mixer" role="group" aria-label="Hlasitosť hlasov"></div>
 <p id="error" role="status" hidden></p>
@@ -1406,7 +1406,7 @@ c-1 -3 -2 -7 -2 -10c0 -18 21 -27 43 -29c9 -1 13 -8 13 -15s-5 -15 -14 -15z" fill=
 </text>
 </g>
 </g>
-<g>
+<g class="measure" data-bar="8" data-note="25,28,2">
 <g transform="translate(87.6786, 77.4907)">
 <path transform="scale(0.0040, -0.0040)" d="M302 37c7 9 10 17 10 26c0 22 -20 42 -42 42c-4 0 -7 -1 -11 -2c-30 -9 -77 -38 -113 -62s-83 -54 -103 -78c-7 -9 -10 -17 -10 -26c0 -22 20 -42 42 -42c4 0 7 1 11 2c30 9 77 38 113 62s83 54 103 78zM259 137c48 0 86 -22 86 -74c0 -18 -4 -38 -10 -56
 c-12 -38 -30 -73 -63 -95c-53 -36 -113 -49 -186 -49c-48 0 -86 22 -86 74c0 18 4 38 10 56c12 38 31 73 64 95c53 36 112 49 185 49z" fill="currentColor"/>
@@ -1841,7 +1841,7 @@ c-12 -38 -30 -73 -63 -95c-53 -36 -113 -49 -186 -49c-48 0 -86 22 -86 74c0 18 4 38
 </text>
 </g>
 </g>
-<g>
+<g class="measure" data-bar="8" data-note="28,29,2">
 <g transform="translate(103.1462, 77.4907)">
 <path transform="scale(0.0040, -0.0040)" d="M214 137c57 0 112 -29 112 -92c0 -18 -5 -37 -13 -54c-30 -66 -111 -128 -202 -128c-57 0 -111 29 -111 92c0 18 5 37 13 54c30 66 110 128 201 128z" fill="currentColor"/>
 </g>
@@ -5796,11 +5796,12 @@ c-12 -38 -30 -73 -63 -95c-53 -36 -113 -49 -186 -49c-48 0 -86 22 -86 74c0 18 4 38
 </section>
 
 <p><a href="gojdicovci-assets/klavir/LICENCIA.md" target="_blank" rel="noopener">Licencia zvuku Grand Piano</a></p><footer id="player-dates">
-  <small>Dátum a čas poslednej úpravy: <time id="player-modified" datetime="2026-11-16T19:46:27.826Z">16. 11. 2026, 20:46:27</time><br>
+  <small>Dátum a čas poslednej úpravy: <time id="player-modified" datetime="2026-11-16T20:14:14.561Z">16. 11. 2026, 21:14:14</time><br>
   Dátum a čas načítania alebo obnovenia: <time id="player-loaded"></time></small>
 </footer>
 </main>
 <div id="floating-controls" role="group" aria-label="Ovládanie prehrávania" hidden>
+  <a class="return-link" href="https://sites.google.com/view/gojdicovci/reperto%C3%A1r" target="_top" aria-label="Zatvoriť prehrávač a vrátiť sa na repertoár" title="Zatvoriť prehrávač"><span aria-hidden="true">×</span></a>
   <button id="previous-bar" type="button" aria-label="Predchádzajúci takt" title="Predchádzajúci takt">⏮</button>
   <button id="floating-play" type="button" aria-label="Prehrať" title="Prehrať">▶</button>
 </div>
