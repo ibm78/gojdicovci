@@ -38,7 +38,7 @@
     </details>
     <details><summary>Zobrazenie partitúry</summary>
       <div class="at-options">
-        <label>Rozloženie <select id="at-layout"><option value="Page">Riadky</option><option value="Horizontal">Vodorovne</option><option value="Parchment">Súvislá stránka</option></select></label>
+        <label>Rozloženie <select id="at-layout"><option value="Page">Riadky</option><option value="Horizontal" selected>Vodorovne</option><option value="Parchment">Súvislá stránka</option></select></label>
         <label>Zväčšenie <select id="at-zoom"><option value="0.5">50 %</option><option value="0.75">75 %</option><option value="1" selected>100 %</option><option value="1.25">125 %</option><option value="1.5">150 %</option><option value="2">200 %</option></select></label>
         <label>Takty na riadku <input id="at-bars-row" type="number" min="-1" max="16" value="-1" step="1"><small>−1 = automaticky</small></label>
         <label>Posúvanie <select id="at-scroll"><option value="OffScreen" selected>Keď noty zmiznú z okna</option><option value="Continuous">Priebežne</option><option value="Smooth">Plynulo</option><option value="Off">Vypnuté</option></select></label>
@@ -93,18 +93,31 @@
   const libraryRoot = 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.8.3/dist/';
   const api = new alphaTab.AlphaTabApi(byId('alpha-score'), {
     core:{fontDirectory:libraryRoot+'font/',scriptFile:libraryRoot+'alphaTab.min.js',engine:'svg'},
-    display:{staveProfile:alphaTab.StaveProfile.Score},
+    display:{staveProfile:alphaTab.StaveProfile.Score,layoutMode:alphaTab.LayoutMode.Horizontal},
     notation:{elements:new Map([[alphaTab.NotationElement.EffectTempo,false]])},
     player:{
       enablePlayer:true,soundFont:libraryRoot+'soundfont/sonivox.sf2',
       enableCursor:true,enableElementHighlighting:true,
       enableUserInteraction:true,enableSeekToClick:true,
+      scrollElement:document.querySelector('.sheet'),
       scrollMode:alphaTab.ScrollMode.OffScreen
     }
   });
   api.error.on(cause => {
     showError('alphaTab nedokázal načítať partitúru alebo zvuk. Obnovte stránku.');
     console.warn('Gojdičovci: alphaTab',cause);
+  });
+  // Follow the current beat even when a single bar is wider than the viewport.
+  api.playedBeatChanged.on(beat => {
+    if (!beat || api.settings.player.scrollMode === alphaTab.ScrollMode.Off) return;
+    const bounds = api.boundsLookup?.findBeat(beat);
+    const sheet = document.querySelector('.sheet');
+    if (!bounds || !sheet.clientWidth || sheet.scrollWidth <= sheet.clientWidth) return;
+    const left = sheet.getBoundingClientRect().left + sheet.clientLeft;
+    const x = byId('alpha-score').getBoundingClientRect().left + bounds.onNotesX;
+    const margin = Math.min(40,sheet.clientWidth*.12);
+    if (x >= left+margin && x <= left+sheet.clientWidth-margin) return;
+    sheet.scrollLeft = Math.max(0,sheet.scrollLeft+x-left-sheet.clientWidth*.25);
   });
   let initialScore;
   const trackStates = [];

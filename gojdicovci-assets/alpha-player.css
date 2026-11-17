@@ -1,4 +1,4 @@
-.alpha-sheet{position:relative;overflow:auto}
+.alpha-sheet{position:relative;overflow:auto;max-height:calc(100vh - 2rem);max-height:calc(100dvh - 2rem)}
 .at-cursor-bar{background:rgba(37,81,61,.08)}
 .at-cursor-beat{background:rgba(211,18,33,.25);width:3px}
 .at-highlight *{fill:#d31221!important;stroke:#d31221!important;forced-color-adjust:none}
