@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gojdičovci · Návod k prehrávačom v1 a v2</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:#203a30;font:1rem/1.65 system-ui,sans-serif}
+main{max-width:900px;margin:auto;padding:2rem 1.25rem 4rem}
+h1,h2,h3{line-height:1.25}
+h1{font:700 clamp(1.8rem,5vw,2.7rem)/1.15 Georgia,serif}
+h2{font-size:1.5rem;margin-top:2.5rem;padding-top:1rem;border-top:1px solid #d9e0d6}
+h3{font-size:1.12rem;margin-top:1.75rem}
+p,li{max-width:76ch}
+li{margin:.45rem 0}
+a{color:#205c43;text-underline-offset:.2em}
+nav{display:flex;flex-wrap:wrap;gap:.6rem 1.25rem;margin:1.5rem 0}
+nav a{font-weight:650}
+.intro{font-size:1.1rem}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;margin:1rem 0}
+th,td{text-align:left;vertical-align:top;padding:.75rem;border-bottom:1px solid #d9e0d6}
+th{background:#eef2ec}
+td:first-child{min-width:9rem;font-weight:650}
+.example{background:#eef2ec;border-left:4px solid #25513d;padding:.9rem 1.1rem;border-radius:0 8px 8px 0}
+footer{margin-top:3rem;border-top:1px solid #d9e0d6;padding-top:1rem;font-size:.9rem;color:#485a50}
+@media(max-width:480px){main{padding:1.25rem .85rem 2.5rem}th,td{padding:.55rem}td:first-child{min-width:7rem}}
+@media print{nav{display:none}main{max-width:none;padding:0}h2,h3{break-after:avoid}tr,.example{break-inside:avoid}body{font-size:10pt}}
+</style>
+</head>
+<body>
+<main>
+<h1>Návod k prehrávačom v1 a v2</h1>
+<p class="intro">Prehrávače na stránke zboru Gojdičovci slúžia na domáci nácvik skladieb. Môžete sledovať noty, počúvať jednotlivé hlasy a prispôsobiť si rýchlosť prehrávania.</p>
+<nav aria-label="Obsah návodu">
+<a href="#zaciatok">Otvorenie skladby</a><a href="#v1">Prehrávač v1</a><a href="#v2">Prehrávač v2</a><a href="#nacvik">Príklady nácviku</a><a href="#pomoc">Pomoc</a>
+</nav>
+
+<h2 id="zaciatok">Otvorenie skladby z repertoára</h2>
+<p>Pri každej skladbe nájdete názov, autora a tri tlačidlá. Pri prehrávačoch je pod trojuholníkom označenie verzie.</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Tlačidlo</th><th scope="col">Použitie</th></tr></thead>
+<tbody>
+<tr><td>Šípka nadol</td><td>Stiahne PDF s notami. Ak sa PDF otvorí v prehliadači, použite jeho tlačidlo na stiahnutie. Súbor nájdete v priečinku s prevzatými súbormi alebo na mieste, ktoré ste vybrali.</td></tr>
+<tr><td>▶ v1</td><td>Otvorí prehrávač s partitúrou vysádzanou v LilyPonde a spoločným ovládaním hlasov Soprán, Alt, Tenor a Bas.</td></tr>
+<tr><td>▶ v2</td><td>Otvorí prehrávač alphaTab s podrobnejším ovládaním stôp, opakovaním úsekov a nastaviteľným zobrazením partitúry.</td></tr>
+</tbody></table></div>
+<p>Pri otvorení z vloženej karty v Google Sites sa prehrávač otvorí v novej záložke. Repertoár máte naďalej dostupný v pôvodnej záložke. Pri samostatne otvorenej karte repertoára sa prehrávač otvorí v tej istej záložke.</p>
+<p>Počkajte na načítanie partitúry a zvuku. Prehrávanie spustíte tlačidlom <strong>Prehrať</strong>. Pre nácvik so zvukom potrebujete zapnutú hlasitosť zariadenia a pripojenie na internet.</p>
+
+<h2 id="v1">Prehrávač v1</h2>
+<p>Táto verzia používa pôvodnú partitúru z LilyPondu. Zvukom môže byť klavír alebo trojuholníkový signál podľa nastavenia pri príprave skladby. Použitý zvuk je uvedený pri ovládaní.</p>
+<h3>Spustenie a pohyb v skladbe</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Ovládanie</th><th scope="col">Čo urobí</th></tr></thead>
+<tbody>
+<tr><td>Prehrať / Pozastaviť</td><td>Spustí alebo pozastaví prehrávanie. Po pozastavení môžete pokračovať od rovnakého miesta.</td></tr>
+<tr><td>Od začiatku</td><td>Presunie prehrávanie na začiatok skladby. Ak skladba práve hrá, prehrávanie pokračuje od začiatku.</td></tr>
+<tr><td>Poloha</td><td>Posuvníkom vyberiete miesto v skladbe. Vedľa neho je číslo aktuálneho taktu a počet taktov.</td></tr>
+<tr><td>Kliknutie na notu</td><td>Pri notách s priradenou pozíciou preskočí na začiatok príslušného taktu.</td></tr>
+<tr><td>Tempo</td><td>Mení rýchlosť od 50 do 150 %. Hodnota 100 % znamená základné tempo skladby. Vedľa posuvníka je aj údaj BPM, teda počet dôb za minútu.</td></tr>
+</tbody></table></div>
+<h3>Hlasitosť hlasov</h3>
+<p>Každý hlas má samostatný posuvník hlasitosti a tlačidlo <strong>Stíšiť</strong>. Po stíšení sa tlačidlo zmení na <strong>Zapnúť</strong>. Opätovným stlačením hlas znova zapnete. Ak je hlas rozdelený do viacerých MIDI stôp, spoločné ovládanie príslušného hlasu ich ovláda naraz.</p>
+<p>Počas prehrávania sa dostupné priradené noty zvýrazňujú načerveno. Partitúra sleduje prehrávaný riadok a pri užšom okne sa môže posúvať aj vodorovne. Rozsah zvýrazňovania závisí od spracovania konkrétnej skladby.</p>
+<h3>Plávajúce tlačidlá</h3>
+<p>Po spustení prehrávania sa pri pravom dolnom okraji okna zobrazia tri okrúhle tlačidlá. Zostávajú dostupné pri posúvaní stránky.</p>
+<ul>
+<li><strong>▶ / ⏸</strong> spustí alebo pozastaví prehrávanie.</li>
+<li><strong>⏮</strong> presunie prehrávanie na začiatok predchádzajúceho taktu. V prvom takte sa vráti na začiatok skladby.</li>
+<li><strong>×</strong> ukončí prehrávač zatvorením jeho záložky.</li>
+</ul>
+<p>Na zatvorenie slúži aj tlačidlo <strong>Ukončiť</strong> nad partitúrou.</p>
+
+<h2 id="v2">Prehrávač v2 · alphaTab</h2>
+<p>Verzia v2 prehráva skladbu klavírnym zvukom a vykresľuje vlastné rozloženie partitúry. Zobrazuje aj prenesený text piesne, latinku alebo azbuku podľa skladby. Úvodný údaj tempa v tvare ♩ = … je nad partitúrou skrytý. Tempo nastavujete v ovládacom paneli.</p>
+<p>Počas načítavania je tlačidlo <strong>Načítavam…</strong> neaktívne. Po príprave zvuku a partitúry sa zmení na <strong>Prehrať</strong>. Ďalšie nastavenia rozbalíte kliknutím alebo ťuknutím na názov príslušnej sekcie.</p>
+<h3>Základné ovládanie</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Ovládanie</th><th scope="col">Čo urobí</th></tr></thead>
+<tbody>
+<tr><td>Prehrať / Pozastaviť</td><td>Spustí alebo pozastaví skladbu. Opätovným spustením pokračujete od aktuálnej polohy.</td></tr>
+<tr><td>⏹ Zastaviť</td><td>Zastaví prehrávanie a vráti ho na začiatok.</td></tr>
+<tr><td>Poloha</td><td>Presunie prehrávanie na vybrané miesto. Panel zobrazuje aj aktuálny takt, uplynutý čas a celkovú dĺžku skladby.</td></tr>
+<tr><td>Tempo</td><td>Mení rýchlosť od 10 do 300 %. Pri 50 % hrá skladba polovičnou rýchlosťou, pri 100 % základnou a pri 150 % jedenapolnásobnou.</td></tr>
+<tr><td>Celková hlasitosť</td><td>Nastavuje hlasitosť celého prehrávača. Jednotlivé stopy môžete ďalej vyvážiť samostatne.</td></tr>
+<tr><td>Transpozícia zvuku</td><td>Posúva výšku prehrávaného zvuku o zadaný počet poltónov v rozsahu −24 až +24. Hodnota 0 znamená pôvodnú výšku, +2 zvýšenie o celý tón a −2 zníženie o celý tón.</td></tr>
+<tr><td>Ukončiť</td><td>Zatvorí záložku prehrávača.</td></tr>
+</tbody></table></div>
+<p>Aj vo v2 sú po spustení dostupné plávajúce tlačidlá <strong>▶ / ⏸</strong>, <strong>⏮</strong> a <strong>×</strong>.</p>
+<h3>Hlasy a stopy</h3>
+<p>V sekcii <strong>Hlasy a stopy</strong> je každý samostatný hlas alebo delený hlas uvedený na vlastnom riadku. Pri každej stope máte tieto možnosti.</p>
+<ul>
+<li><strong>Noty</strong> zobrazí alebo skryje notový zápis danej stopy. Zvuk ovládate jej hlasitosťou, voľbou Stíšiť a voľbou Solo.</li>
+<li><strong>Hlasitosť</strong> nastavuje úroveň zvuku konkrétnej stopy.</li>
+<li><strong>Stíšiť</strong> vypne zvuk danej stopy. Zrušením zaškrtnutia ju znova zapnete.</li>
+<li><strong>Solo</strong> umožní počúvať vybranú stopu samostatne. Pri zaškrtnutí viacerých volieb Solo počujete vybrané stopy spoločne. Na návrat k celému zboru zrušte všetky voľby Solo a podľa potreby aj Stíšiť.</li>
+</ul>
+<p>Tlačidlá <strong>Noty Soprán</strong>, <strong>Noty Alt</strong>, <strong>Noty Tenor</strong> a <strong>Noty Bas</strong> zapínajú alebo skrývajú noty celej skupiny vrátane delených stôp. V partitúre musí zostať zobrazená aspoň jedna stopa.</p>
+<h3>Opakovanie a rytmus</h3>
+<p>Pri nácviku krátkeho úseku postupujte takto.</p>
+<ol>
+<li>Rozbaľte <strong>Opakovanie a rytmus</strong>.</li>
+<li>Do polí <strong>Od taktu</strong> a <strong>Po takt</strong> zadajte prvý a posledný takt úseku. Posledný takt je do úseku zahrnutý.</li>
+<li>Stlačte <strong>Použiť rozsah</strong>. Poloha sa presunie na začiatok úseku.</li>
+<li>Zaškrtnite <strong>Opakovať prehrávanie</strong> a stlačte <strong>Prehrať</strong>.</li>
+</ol>
+<p>Tlačidlo <strong>Celá skladba</strong> zruší obmedzenie rozsahu. Ak je stále zaškrtnuté <strong>Opakovať prehrávanie</strong>, bude sa opakovať celá skladba. Na vypnutie opakovania zrušte aj toto zaškrtnutie.</p>
+<p>Posuvník <strong>Metronóm</strong> pridáva počas prehrávania rytmické kliknutie. Posuvník <strong>Odpočítanie pred štartom</strong> nastavuje hlasitosť úvodného odpočítania. Posunutím príslušného posuvníka na nulu jeho zvuk vypnete.</p>
+<h3>Zobrazenie partitúry</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Nastavenie</th><th scope="col">Použitie</th></tr></thead>
+<tbody>
+<tr><td>Rozloženie</td><td><strong>Riadky</strong> usporiadajú skladbu do notových riadkov. <strong>Vodorovne</strong> rozloží skladbu do dlhého vodorovného pásu. <strong>Súvislá stránka</strong> ponúka ďalší súvislý spôsob rozloženia.</td></tr>
+<tr><td>Zväčšenie</td><td>Mení veľkosť notového zápisu od 50 do 200 %.</td></tr>
+<tr><td>Takty na riadku</td><td>Určuje počet taktov na riadku v rozložení, ktoré riadky používa. Hodnota −1 znamená automatické rozloženie.</td></tr>
+<tr><td>Posúvanie</td><td>Vyberiete posúvanie pri opustení okna, priebežné posúvanie, plynulé posúvanie alebo jeho vypnutie.</td></tr>
+<tr><td>Kurzor prehrávania</td><td>Zapína ukazovateľ aktuálnej polohy v partitúre.</td></tr>
+<tr><td>Plynulý pohyb kurzora</td><td>Zapína animovaný pohyb kurzora.</td></tr>
+<tr><td>Červené zvýrazňovanie</td><td>Zapína červené označovanie nôt počas prehrávania.</td></tr>
+<tr><td>Text piesne</td><td>Zobrazí alebo skryje text prenesený do skladby.</td></tr>
+<tr><td>Výber úseku a kliknutie do nôt</td><td>Povolí priamu interakciu s partitúrou, napríklad presun na vybrané miesto kliknutím a výber úseku myšou.</td></tr>
+<tr><td>Ukázať aktuálne noty</td><td>Posunie zobrazenie k aktuálnej polohe prehrávania.</td></tr>
+</tbody></table></div>
+<h3>Zvuk a export</h3>
+<p>Tlačidlo <strong>Vyhľadať zvukové výstupy</strong> načíta dostupné zariadenia. Potom si môžete v poli <strong>Zvukový výstup</strong> vybrať napríklad slúchadlá alebo reproduktory. Dostupnosť tejto funkcie závisí od prehliadača a jeho povolení.</p>
+<p><strong>Stiahnuť MIDI</strong> vytvorí MIDI súbor z partitúry otvorenej vo v2. <strong>Tlačiť noty</strong> otvorí tlač partitúry vykreslenej v alphaTab. Pôvodné PDF skladby si stiahnete tlačidlom so šípkou v repertoári.</p>
+
+<h2 id="nacvik">Príklady domáceho nácviku</h2>
+<h3>Najprv si vypočuť vlastný hlas</h3>
+<p>Vo v1 stíšte ostatné hlasy. Vo v2 zaškrtnite <strong>Solo</strong> pri svojej stope. Pri delenom hlase vyberte príslušnú časť, napríklad Bas 1 alebo Bas 2 podľa názvu v zozname. Znížte tempo a sledujte noty aj text.</p>
+<h3>Spievať s ostatnými hlasmi</h3>
+<p>Po osvojení melódie zapnite ostatné hlasy a znížte hlasitosť svojho hlasu. Neskôr ho môžete úplne stíšiť a spievať s klavírnym sprievodom ostatných hlasov. Vo v2 najprv zrušte voľby Solo, aby sa ostatné stopy mohli ozvať.</p>
+<h3>Opakovane nacvičiť náročné miesto</h3>
+<div class="example"><p>Vo v2 zadajte napríklad <strong>Od taktu 8</strong> a <strong>Po takt 12</strong>, stlačte <strong>Použiť rozsah</strong>, zapnite opakovanie a nastavte tempo na 70 %. Keď úsek zvládnete, postupne tempo zvyšujte až na 100 %.</p></div>
+
+<h2 id="pomoc">Pomoc pri používaní</h2>
+<h3>Prehrávač ešte nie je pripravený</h3>
+<p>Počkajte na načítanie. Najmä pri prvom otvorení sa načítava knižnica, partitúra a klavírne zvuky. Ak sa zobrazí chyba, skontrolujte pripojenie na internet a stránku obnovte.</p>
+<h3>Nie je počuť zvuk</h3>
+<p>Skontrolujte hlasitosť zariadenia, pripojené slúchadlá a hlasitosť prehrávača. Overte, či požadovaná stopa nemá zapnuté <strong>Stíšiť</strong>. Vo v2 skontrolujte aj <strong>Solo</strong> pri ostatných stopách. Ak prehrávač oznámi chybu spustenia zvuku, skúste tlačidlo <strong>Prehrať</strong> znova.</p>
+<h3>Časť nôt nie je viditeľná</h3>
+<p>Vo v2 skontrolujte políčka <strong>Noty</strong> pri stopách a tlačidlá skupín hlasov. Pri malom displeji znížte zväčšenie alebo vyberte vhodné rozloženie. K aktuálnej polohe sa vrátite tlačidlom <strong>Ukázať aktuálne noty</strong>.</p>
+<h3>Tlačidlo Ukončiť nezatvorilo záložku</h3>
+<p>Prehliadač môže obmedziť zatvorenie záložky, ktorú ste otvorili ručne. Zatvorte ju bežným krížikom záložky a prejdite na záložku s repertoárom.</p>
+<h3>Po aktualizácii vidíte staré ovládanie</h3>
+<p>Zatvorte prehrávač a otvorte ho z repertoára znova. Vo Windows môžete použiť aj <strong>Ctrl + F5</strong>. Ak problém pretrváva, oznámte správcovi názov skladby, verziu prehrávača a text chyby.</p>
+<h3>Dátumy na konci prehrávača</h3>
+<p>Údaj o poslednej úprave označuje čas vytvorenia HTML súboru pri konverzii. Údaj o načítaní alebo obnovení označuje otvorenie stránky prehrávača. Pomáhajú pri overovaní, akú verziu skladby máte otvorenú.</p>
+<footer>Návod pre členov zboru Gojdičovci · opisuje aktuálne ovládanie prehrávačov v1 a v2.</footer>
+</main>
+</body>
+</html>
