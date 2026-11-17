@@ -94,6 +94,7 @@
   const api = new alphaTab.AlphaTabApi(byId('alpha-score'), {
     core:{fontDirectory:libraryRoot+'font/',scriptFile:libraryRoot+'alphaTab.min.js',engine:'svg'},
     display:{staveProfile:alphaTab.StaveProfile.Score},
+    notation:{elements:new Map([[alphaTab.NotationElement.EffectTempo,false]])},
     player:{
       enablePlayer:true,soundFont:libraryRoot+'soundfont/sonivox.sf2',
       enableCursor:true,enableElementHighlighting:true,
