@@ -15,6 +15,7 @@
   .download-icon { position: relative; border-bottom: .18rem solid; border-radius: 0 0 .15rem .15rem; }
   .download-icon::before { content: ""; position: absolute; inset: 0 12% 18%; background: currentColor; clip-path: polygon(40% 0,60% 0,60% 55%,100% 55%,50% 100%,0 55%,40% 55%); }
   .play-icon { background: currentColor; clip-path: polygon(22% 8%,88% 50%,22% 92%); }
+  .alpha-play-icon { font-size: 1.05rem; font-weight: 700; white-space: nowrap; }
   @media (max-width: 480px) {
     main { padding: 0; }
     article { padding: .25rem .5rem; gap: .4rem; }
