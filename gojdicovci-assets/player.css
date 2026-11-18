@@ -39,12 +39,17 @@ body.embed #nacvik{margin:1rem 0}
 #floating-controls .return-link{display:grid;place-items:center}
 #floating-controls :is(button,.return-link):is(:hover,:focus-visible){background:#203a30}
 #floating-controls :is(button,.return-link):focus-visible{outline:3px solid #fff;outline-offset:2px}
-#floating-controls:not([hidden]) :is(button,.return-link){animation:floating-controls-highlight 6s linear 1}
+#floating-controls:not([hidden]){animation:floating-controls-arrive 2s ease-in-out 1}
+#floating-controls:not([hidden]) :is(button,.return-link){animation:floating-controls-highlight 3.1s linear 1}
+@keyframes floating-controls-arrive{
+  from{right:50%;bottom:50%;transform:translate(50%,50%)}
+  to{right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));transform:translate(0,0)}
+}
 @keyframes floating-controls-highlight{
   0%,100%{box-shadow:0 2px 8px #0003}
-  16.666667%{box-shadow:0 2px 8px #0003,0 0 0 4px rgba(255,216,112,.95),0 0 24px 8px rgba(255,202,74,.8)}
+  3.225806%{box-shadow:0 2px 8px #0003,0 0 0 4px rgba(235,35,35,.95),0 0 24px 8px rgba(235,35,35,.8)}
 }
 @media(prefers-reduced-motion:reduce){
-  #floating-controls:not([hidden]) :is(button,.return-link){animation:none}
+  #floating-controls:not([hidden]),#floating-controls:not([hidden]) :is(button,.return-link){animation:none}
 }
 body.following{padding-bottom:100vh}
