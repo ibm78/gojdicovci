@@ -1,3 +1,36 @@
+const modifiedTime = document.getElementById('player-modified');
+if (modifiedTime) {
+  modifiedTime.removeAttribute('datetime');
+  modifiedTime.textContent = 'Načítavam…';
+  const readModifiedTime = async () => {
+    try {
+      let value;
+      if (location.protocol === 'file:') {
+        value = document.lastModified;
+      } else {
+        const response = await fetch(location.href, {
+          method:'HEAD',cache:'no-cache',signal:AbortSignal.timeout(10000)
+        });
+        if (!response.ok) throw new Error('HTTP '+response.status);
+        value = response.headers.get('Last-Modified');
+      }
+      const date = value ? new Date(value) : null;
+      if (!date || !Number.isFinite(date.getTime())) throw new Error('Chýba dátum súboru.');
+      modifiedTime.dateTime = date.toISOString();
+      modifiedTime.textContent = new Intl.DateTimeFormat('sk-SK', {
+        dateStyle:'medium',timeStyle:'medium',timeZone:'Europe/Bratislava'
+      }).format(date);
+    } catch {
+      modifiedTime.removeAttribute('datetime');
+      modifiedTime.textContent = 'Údaj nie je dostupný';
+    }
+  };
+  readModifiedTime();
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) readModifiedTime();
+  });
+}
+
 const loadedTime = document.getElementById('player-loaded');
 if (loadedTime) {
   const timestampFormat = new Intl.DateTimeFormat('sk-SK', {

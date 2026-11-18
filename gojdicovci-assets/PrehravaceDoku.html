@@ -44,14 +44,14 @@ footer{margin-top:3rem;border-top:1px solid #d9e0d6;padding-top:1rem;font-size:.
 <thead><tr><th scope="col">Tlačidlo</th><th scope="col">Použitie</th></tr></thead>
 <tbody>
 <tr><td>Šípka nadol</td><td>Stiahne PDF s notami. Ak sa PDF otvorí v prehliadači, použite jeho tlačidlo na stiahnutie. Súbor nájdete v priečinku s prevzatými súbormi alebo na mieste, ktoré ste vybrali.</td></tr>
-<tr><td>▶ v1</td><td>Otvorí prehrávač s partitúrou vysádzanou v LilyPonde a spoločným ovládaním hlasov Soprán, Alt, Tenor a Bas.</td></tr>
+<tr><td>▶ v1</td><td>Otvorí prehrávač s partitúrou a spoločným ovládaním hlasov Soprán, Alt, Tenor a Bas.</td></tr>
 <tr><td>▶ v2</td><td>Otvorí prehrávač alphaTab s podrobnejším ovládaním stôp, opakovaním úsekov a nastaviteľným zobrazením partitúry.</td></tr>
 </tbody></table></div>
-<p>Pri otvorení z vloženej karty v Google Sites sa prehrávač otvorí v novej záložke. Repertoár máte naďalej dostupný v pôvodnej záložke. Pri samostatne otvorenej karte repertoára sa prehrávač otvorí v tej istej záložke.</p>
+<p>Pri otvorení z repertoára na tejto stránke sa prehrávač otvorí v novej záložke. Repertoár máte naďalej dostupný v pôvodnej záložke.</p>
 <p>Počkajte na načítanie partitúry a zvuku. Prehrávanie spustíte tlačidlom <strong>Prehrať</strong>. Pre nácvik so zvukom potrebujete zapnutú hlasitosť zariadenia a pripojenie na internet.</p>
 
 <h2 id="v1">Prehrávač v1</h2>
-<p>Táto verzia používa pôvodnú partitúru z LilyPondu. Zvukom môže byť klavír alebo trojuholníkový signál podľa nastavenia pri príprave skladby. Použitý zvuk je uvedený pri ovládaní.</p>
+<p>V tejto verzii sledujete partitúru a ovládate hlasitosť štyroch zborových hlasov. Použitý zvuk je uvedený pri ovládaní.</p>
 <h3>Spustenie a pohyb v skladbe</h3>
 <div class="table-wrap"><table>
 <thead><tr><th scope="col">Ovládanie</th><th scope="col">Čo urobí</th></tr></thead>
@@ -75,8 +75,9 @@ footer{margin-top:3rem;border-top:1px solid #d9e0d6;padding-top:1rem;font-size:.
 <p>Na zatvorenie slúži aj tlačidlo <strong>Ukončiť</strong> nad partitúrou.</p>
 
 <h2 id="v2">Prehrávač v2 · alphaTab</h2>
-<p>Verzia v2 prehráva skladbu klavírnym zvukom a vykresľuje vlastné rozloženie partitúry. Zobrazuje aj prenesený text piesne, latinku alebo azbuku podľa skladby. Úvodný údaj tempa v tvare ♩ = … je nad partitúrou skrytý. Tempo nastavujete v ovládacom paneli.</p>
+<p>Verzia v2 prehráva skladbu klavírnym zvukom a umožňuje prispôsobiť rozloženie partitúry. Zobrazuje aj text piesne, latinku alebo azbuku podľa skladby. Tempo nastavujete v ovládacom paneli.</p>
 <p>Počas načítavania je tlačidlo <strong>Načítavam…</strong> neaktívne. Po príprave zvuku a partitúry sa zmení na <strong>Prehrať</strong>. Ďalšie nastavenia rozbalíte kliknutím alebo ťuknutím na názov príslušnej sekcie.</p>
+<p>Po spustení tlačidlom <strong>Prehrať</strong> sa zobrazenie aj ovládací focus presunú na aktuálne prehrávané noty. Toto platí aj pri pokračovaní po pozastavení.</p>
 <h3>Základné ovládanie</h3>
 <div class="table-wrap"><table>
 <thead><tr><th scope="col">Ovládanie</th><th scope="col">Čo urobí</th></tr></thead>
@@ -99,6 +100,7 @@ footer{margin-top:3rem;border-top:1px solid #d9e0d6;padding-top:1rem;font-size:.
 <li><strong>Solo</strong> umožní počúvať vybranú stopu samostatne. Pri zaškrtnutí viacerých volieb Solo počujete vybrané stopy spoločne. Na návrat k celému zboru zrušte všetky voľby Solo a podľa potreby aj Stíšiť.</li>
 </ul>
 <p>Tlačidlá <strong>Noty Soprán</strong>, <strong>Noty Alt</strong>, <strong>Noty Tenor</strong> a <strong>Noty Bas</strong> zapínajú alebo skrývajú noty celej skupiny vrátane delených stôp. V partitúre musí zostať zobrazená aspoň jedna stopa.</p>
+<p>Spoločný text piesne sa zobrazuje pri každom hlase vrátane delených stôp. Ak má hlas vlastný text, zobrazuje sa jeho text.</p>
 <h3>Opakovanie a rytmus</h3>
 <p>Pri nácviku krátkeho úseku postupujte takto.</p>
 <ol>
@@ -113,7 +115,7 @@ footer{margin-top:3rem;border-top:1px solid #d9e0d6;padding-top:1rem;font-size:.
 <div class="table-wrap"><table>
 <thead><tr><th scope="col">Nastavenie</th><th scope="col">Použitie</th></tr></thead>
 <tbody>
-<tr><td>Rozloženie</td><td><strong>Riadky</strong> usporiadajú skladbu do notových riadkov. <strong>Vodorovne</strong> rozloží skladbu do dlhého vodorovného pásu. <strong>Súvislá stránka</strong> ponúka ďalší súvislý spôsob rozloženia.</td></tr>
+<tr><td>Rozloženie</td><td>Predvolené sú <strong>Riadky</strong>, ktoré usporiadajú skladbu do notových riadkov. <strong>Vodorovne</strong> rozloží skladbu do dlhého vodorovného pásu. Počas prehrávania sa partitúra automaticky posúva v jej okne. Pri vodorovnom rozložení sleduje prehrávané noty aj v dlhom takte. <strong>Súvislá stránka</strong> ponúka ďalší súvislý spôsob rozloženia.</td></tr>
 <tr><td>Zväčšenie</td><td>Mení veľkosť notového zápisu od 50 do 200 %.</td></tr>
 <tr><td>Takty na riadku</td><td>Určuje počet taktov na riadku v rozložení, ktoré riadky používa. Hodnota −1 znamená automatické rozloženie.</td></tr>
 <tr><td>Posúvanie</td><td>Vyberiete posúvanie pri opustení okna, priebežné posúvanie, plynulé posúvanie alebo jeho vypnutie.</td></tr>
@@ -148,7 +150,7 @@ footer{margin-top:3rem;border-top:1px solid #d9e0d6;padding-top:1rem;font-size:.
 <h3>Po aktualizácii vidíte staré ovládanie</h3>
 <p>Zatvorte prehrávač a otvorte ho z repertoára znova. Vo Windows môžete použiť aj <strong>Ctrl + F5</strong>. Ak problém pretrváva, oznámte správcovi názov skladby, verziu prehrávača a text chyby.</p>
 <h3>Dátumy na konci prehrávača</h3>
-<p>Údaj o poslednej úprave označuje čas vytvorenia HTML súboru pri konverzii. Údaj o načítaní alebo obnovení označuje otvorenie stránky prehrávača. Pomáhajú pri overovaní, akú verziu skladby máte otvorenú.</p>
+<p>Údaj o poslednej úprave sa pri otvorení prehrávača načíta zo servera podľa poslednej úpravy HTML súboru. Po nahratí alebo zverejnení novej verzie sa preto môže zmeniť. Zobrazuje sa v slovenskom čase. Ak server údaj neposkytne alebo sa ho nepodarí načítať, zobrazí sa „Údaj nie je dostupný“. Pri otvorení súboru priamo zo zariadenia sa použije dátum poslednej úpravy, ktorý poskytne prehliadač. Údaj o načítaní alebo obnovení označuje otvorenie stránky prehrávača. Oba údaje pomáhajú pri overovaní, akú verziu skladby máte otvorenú.</p>
 <footer>Návod pre členov zboru Gojdičovci · opisuje aktuálne ovládanie prehrávačov v1 a v2.</footer>
 </main>
 </body>

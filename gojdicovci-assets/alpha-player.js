@@ -2,6 +2,38 @@
 
 (() => {
   const byId = id => document.getElementById(id);
+  const modifiedTime = byId('player-modified');
+  if (modifiedTime) {
+    modifiedTime.removeAttribute('datetime');
+    modifiedTime.textContent = 'Načítavam…';
+    const readModifiedTime = async () => {
+      try {
+        let value;
+        if (location.protocol === 'file:') {
+          value = document.lastModified;
+        } else {
+          const response = await fetch(location.href, {
+            method:'HEAD',cache:'no-cache',signal:AbortSignal.timeout(10000)
+          });
+          if (!response.ok) throw new Error('HTTP '+response.status);
+          value = response.headers.get('Last-Modified');
+        }
+        const date = value ? new Date(value) : null;
+        if (!date || !Number.isFinite(date.getTime())) throw new Error('Chýba dátum súboru.');
+        modifiedTime.dateTime = date.toISOString();
+        modifiedTime.textContent = new Intl.DateTimeFormat('sk-SK', {
+          dateStyle:'medium',timeStyle:'medium',timeZone:'Europe/Bratislava'
+        }).format(date);
+      } catch {
+        modifiedTime.removeAttribute('datetime');
+        modifiedTime.textContent = 'Údaj nie je dostupný';
+      }
+    };
+    readModifiedTime();
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) readModifiedTime();
+    });
+  }
   const controls = document.querySelector('.controls');
   controls.classList.add('at-controls');
   controls.innerHTML = `
@@ -38,7 +70,7 @@
     </details>
     <details><summary>Zobrazenie partitúry</summary>
       <div class="at-options">
-        <label>Rozloženie <select id="at-layout"><option value="Page">Riadky</option><option value="Horizontal" selected>Vodorovne</option><option value="Parchment">Súvislá stránka</option></select></label>
+        <label>Rozloženie <select id="at-layout"><option value="Page" selected>Riadky</option><option value="Horizontal">Vodorovne</option><option value="Parchment">Súvislá stránka</option></select></label>
         <label>Zväčšenie <select id="at-zoom"><option value="0.5">50 %</option><option value="0.75">75 %</option><option value="1" selected>100 %</option><option value="1.25">125 %</option><option value="1.5">150 %</option><option value="2">200 %</option></select></label>
         <label>Takty na riadku <input id="at-bars-row" type="number" min="-1" max="16" value="-1" step="1"><small>−1 = automaticky</small></label>
         <label>Posúvanie <select id="at-scroll"><option value="OffScreen" selected>Keď noty zmiznú z okna</option><option value="Continuous">Priebežne</option><option value="Smooth">Plynulo</option><option value="Off">Vypnuté</option></select></label>
@@ -93,7 +125,7 @@
   const libraryRoot = 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.8.3/dist/';
   const api = new alphaTab.AlphaTabApi(byId('alpha-score'), {
     core:{fontDirectory:libraryRoot+'font/',scriptFile:libraryRoot+'alphaTab.min.js',engine:'svg'},
-    display:{staveProfile:alphaTab.StaveProfile.Score,layoutMode:alphaTab.LayoutMode.Horizontal},
+    display:{staveProfile:alphaTab.StaveProfile.Score,layoutMode:alphaTab.LayoutMode.Page},
     notation:{elements:new Map([[alphaTab.NotationElement.EffectTempo,false]])},
     player:{
       enablePlayer:true,soundFont:libraryRoot+'soundfont/sonivox.sf2',
@@ -107,11 +139,22 @@
     showError('alphaTab nedokázal načítať partitúru alebo zvuk. Obnovte stránku.');
     console.warn('Gojdičovci: alphaTab',cause);
   });
+  const sheet = document.querySelector('.sheet');
+  sheet.tabIndex = -1;
+  let focusOnNextBeat = false;
+  function focusScore() {
+    sheet.focus({preventScroll:true});
+    sheet.scrollIntoView({block:'start',inline:'nearest'});
+    api.scrollToCursor();
+  }
   // Follow the current beat even when a single bar is wider than the viewport.
   api.playedBeatChanged.on(beat => {
+    if (beat && focusOnNextBeat) {
+      focusOnNextBeat = false;
+      focusScore();
+    }
     if (!beat || api.settings.player.scrollMode === alphaTab.ScrollMode.Off) return;
     const bounds = api.boundsLookup?.findBeat(beat);
-    const sheet = document.querySelector('.sheet');
     if (!bounds || !sheet.clientWidth || sheet.scrollWidth <= sheet.clientWidth) return;
     const left = sheet.getBoundingClientRect().left + sheet.clientLeft;
     const x = byId('alpha-score').getBoundingClientRect().left + bounds.onNotesX;
@@ -205,15 +248,17 @@
     floatingPlay.textContent = playing?'⏸':'▶';
     floatingPlay.setAttribute('aria-label',play.textContent);
     floatingPlay.title = play.textContent;
-    if (playing) byId('floating-controls').hidden = false;
+    if (playing) {
+      byId('floating-controls').hidden = false;
+      focusOnNextBeat = true;
+      focusScore();
+    } else {
+      focusOnNextBeat = false;
+    }
   });
   const toggle = () => {
     error.hidden = true;
     api.playPause();
-    if (api.playerState === alphaTab.synth.PlayerState.Playing) {
-      document.querySelector('.sheet').scrollIntoView({block:'start'});
-      api.scrollToCursor();
-    }
   };
   play.onclick = floatingPlay.onclick = toggle;
   byId('reset').onclick = () => {

@@ -3,7 +3,7 @@
   main { max-width: 58rem; margin: auto; padding: 1rem 1rem .25rem; display: grid; gap: 1rem; }
   article { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(.5rem, 3vw, 1.25rem); background: white; border: 1px solid #d9e0d6; border-left: .35rem solid #25513d; border-radius: .75rem; padding: clamp(1rem, 4vw, 2rem); }
   .song-info { min-width: 0; overflow-wrap: anywhere; }
-  h2 { font-family: Georgia, serif; font-size: clamp(1.1rem, 3vw, 1.5rem); line-height: 1.15; margin: 0 0 .4rem; }
+  h2 { font-family: Tahoma, Geneva, sans-serif; font-size: clamp(1.1rem, 3vw, 1.5rem); line-height: 1.15; margin: 0 0 .4rem; }
   p { margin: 0; color: #485a50; font-size: 1.1rem; }
   nav { display: flex; gap: clamp(.25rem, 2vw, .65rem); }
   a { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: .65rem; border: 1px solid #25513d; color: #203a30; text-decoration: none; }
