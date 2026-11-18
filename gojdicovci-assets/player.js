@@ -266,21 +266,6 @@
 
   let sampleDownload = pianoSamples.length ? fetchPianoSamples().catch(() => null) : null;
 
-  async function waitForAudioOutput(context, wake) {
-    try {
-      const startingTime = context.currentTime;
-      const deadline = performance.now() + 8000;
-      while (performance.now() < deadline) {
-        if (context.state === 'running' && context.currentTime > startingTime) return;
-        await new Promise(resolve => setTimeout(resolve, 25));
-      }
-      throw new Error(t('errorAudioOutputStart'));
-    } finally {
-      wake.stop();
-      wake.disconnect();
-    }
-  }
-
   async function togglePlayback(){
     if(playing){pause();return;}
     if(busy) return;
@@ -288,6 +273,7 @@
     const error = byId('error');
     error.hidden = true;
     play.textContent = t('startingAudio');
+    let activation;
     try {
       if(!audio || audio.state === 'closed'){
         audio=new (window.AudioContext || window.webkitAudioContext)();
@@ -299,12 +285,7 @@
       }
       // Request output and queue silence while still handling the user's click.
       const context = audio;
-      const wake = context.createBufferSource();
-      wake.buffer = context.createBuffer(1, 128, context.sampleRate);
-      wake.loop = true;
-      wake.connect(context.destination);
-      const resumed = context.resume();
-      wake.start();
+      activation = i18n.prepareAudio(context);
 
       async function preparePiano() {
         if (!pianoSamples.length || piano) return;
@@ -315,7 +296,7 @@
         sampleDownload = null;
       }
 
-      await Promise.all([resumed, waitForAudioOutput(context, wake), preparePiano()]);
+      await Promise.all([activation.ready, preparePiano()]);
       if (context.state !== 'running') throw new Error(t('errorAudioInterrupted'));
 
       document.body.classList.add('following');
@@ -328,7 +309,7 @@
       error.hidden=false;
       error.textContent=t('errorAudioStart');
       console.warn(t('logAudioStart'), cause);
-    } finally { busy=false; }
+    } finally { activation?.release(); busy=false; }
   }
   play.onclick = floatingPlay.onclick = togglePlayback;
   function seek(value) {
