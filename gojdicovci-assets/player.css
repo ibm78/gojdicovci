@@ -39,4 +39,12 @@ body.embed #nacvik{margin:1rem 0}
 #floating-controls .return-link{display:grid;place-items:center}
 #floating-controls :is(button,.return-link):is(:hover,:focus-visible){background:#203a30}
 #floating-controls :is(button,.return-link):focus-visible{outline:3px solid #fff;outline-offset:2px}
+#floating-controls:not([hidden]) :is(button,.return-link){animation:floating-controls-highlight 6s linear 1}
+@keyframes floating-controls-highlight{
+  0%,100%{box-shadow:0 2px 8px #0003}
+  16.666667%{box-shadow:0 2px 8px #0003,0 0 0 4px rgba(255,216,112,.95),0 0 24px 8px rgba(255,202,74,.8)}
+}
+@media(prefers-reduced-motion:reduce){
+  #floating-controls:not([hidden]) :is(button,.return-link){animation:none}
+}
 body.following{padding-bottom:100vh}

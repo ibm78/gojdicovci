@@ -95,7 +95,12 @@
   if (new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
 
   function applyGain(voice) {
-    voice.gain?.gain.setTargetAtTime(voice.muted ? 0 : voice.volume, audio.currentTime, .01);
+    if (!voice.gain) return;
+    const parameter = voice.gain.gain;
+    const time = audio.currentTime;
+    parameter.cancelScheduledValues(time);
+    if (voice.muted || voice.volume===0) parameter.setValueAtTime(0,time);
+    else parameter.setTargetAtTime(voice.volume,time,.01);
   }
   let soloVoice = -1;
   let statesBeforeSolo;
