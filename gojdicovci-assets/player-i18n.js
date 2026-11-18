@@ -235,19 +235,39 @@
       try { wake.stop(); } finally { wake.disconnect(); }
     };
     const ready = (async () => {
-      let timer;
-      try {
-        await Promise.race([resumed,new Promise((_,reject) => {
-          timer = setTimeout(() => reject(new Error(text('errorAudioOutputStart'))),8000);
-        })]);
-      } finally { clearTimeout(timer); }
+      const bounded = async operation => {
+        let timer;
+        try {
+          return await Promise.race([operation,new Promise((_,reject) => {
+            timer = setTimeout(() => reject(new Error(text('errorAudioOutputStart'))),8000);
+          })]);
+        } finally { clearTimeout(timer); }
+      };
+      await bounded(resumed);
       const deadline = performance.now()+8000;
       let runningSince = null;
+      let lastAdvance = performance.now();
+      let previousTime = context.currentTime;
+      let recovered = false;
       while (performance.now()<deadline) {
+        const currentTime = context.currentTime;
+        if (currentTime > previousTime) lastAdvance = performance.now();
+        previousTime = currentTime;
         if (context.state === 'running') {
-          runningSince ??= context.currentTime;
-          if (context.currentTime-runningSince >= .15) return;
+          runningSince ??= currentTime;
+          if (currentTime-runningSince >= .15) return;
         } else runningSince = null;
+        // Some mobile outputs report "running" while their clock is frozen.
+        // Reopen the same output once, without advancing the score or asking
+        // the user to pause/play. Keep the wake source connected throughout.
+        if (!recovered && performance.now()-lastAdvance >= 750) {
+          recovered = true;
+          if (context.state === 'running' && context.suspend) await bounded(context.suspend());
+          await bounded(context.resume());
+          runningSince = null;
+          previousTime = context.currentTime;
+          lastAdvance = performance.now();
+        }
         await new Promise(resolve => setTimeout(resolve,25));
       }
       throw new Error(text('errorAudioOutputStart'));

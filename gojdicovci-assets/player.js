@@ -307,7 +307,7 @@
     } catch (cause) {
       pause();
       error.hidden=false;
-      error.textContent=t('errorAudioStart');
+      error.textContent=t('errorAudioStart') + (cause?.message ? ' ('+cause.message+')' : '');
       console.warn(t('logAudioStart'), cause);
     } finally { activation?.release(); busy=false; }
   }
