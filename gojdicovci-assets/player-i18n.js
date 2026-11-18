@@ -220,5 +220,39 @@
       }
     });
   }
-  window.GojdicovciI18n = {text,html,voiceNames,initPage,applyBindings};
+  // Invoke inside the user's click and keep silence connected until playback starts.
+  function prepareAudio(context) {
+    const wake = context.createBufferSource();
+    wake.buffer = context.createBuffer(1,128,context.sampleRate);
+    wake.loop = true;
+    wake.connect(context.destination);
+    const resumed = context.resume();
+    wake.start();
+    let released = false;
+    const release = () => {
+      if (released) return;
+      released = true;
+      try { wake.stop(); } finally { wake.disconnect(); }
+    };
+    const ready = (async () => {
+      let timer;
+      try {
+        await Promise.race([resumed,new Promise((_,reject) => {
+          timer = setTimeout(() => reject(new Error(text('errorAudioOutputStart'))),8000);
+        })]);
+      } finally { clearTimeout(timer); }
+      const deadline = performance.now()+8000;
+      let runningSince = null;
+      while (performance.now()<deadline) {
+        if (context.state === 'running') {
+          runningSince ??= context.currentTime;
+          if (context.currentTime-runningSince >= .15) return;
+        } else runningSince = null;
+        await new Promise(resolve => setTimeout(resolve,25));
+      }
+      throw new Error(text('errorAudioOutputStart'));
+    })();
+    return {ready,release};
+  }
+  window.GojdicovciI18n = {text,html,voiceNames,initPage,applyBindings,prepareAudio};
 })();

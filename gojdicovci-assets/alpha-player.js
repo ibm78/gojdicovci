@@ -229,9 +229,35 @@
       focusOnNextBeat = false;
     }
   });
-  const toggle = () => {
+  let startingAudio = false;
+  const toggle = async () => {
+    if (startingAudio) return;
     error.hidden = true;
-    api.playPause();
+    if (api.playerState === alphaTab.synth.PlayerState.Playing) {
+      api.playPause();
+      return;
+    }
+    if (!api.isReadyForPlayback) return;
+    startingAudio = true;
+    let activation;
+    try {
+      // alphaTab 1.8.3 WebAudio output; activate before leaving the click handler.
+      const output = api.player?.output;
+      output?.activate();
+      if (output?.context) {
+        activation = i18n.prepareAudio(output.context);
+        play.textContent = t('startingAudio');
+        await activation.ready;
+      }
+      api.playPause();
+    } catch (cause) {
+      play.textContent = t('play');
+      showError(t('errorAudioStart'));
+      console.warn(t('logAudioStart'),cause);
+    } finally {
+      activation?.release();
+      startingAudio = false;
+    }
   };
   play.onclick = floatingPlay.onclick = toggle;
   byId('reset').onclick = () => {
