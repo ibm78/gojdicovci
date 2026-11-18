@@ -19,11 +19,13 @@ button,.return-link{font:inherit;border:1px solid #53735f;border-radius:8px;back
 #play,button[aria-pressed=true]{background:#25513d;color:white}
 input[type=range]{accent-color:#2e694d;min-width:4em}
 #position{flex:1}
-.mixer{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:.7rem;margin:1rem 0 0}
+.mixer{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem;margin:1rem 0 0}
 .voice{padding:.6rem;background:#eef2ec;border-radius:8px}
 .voice label{display:block;font-weight:650}
 .voice input{width:100%}
 .voice button{width:100%}
+.voice-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.35rem}
+.voice-actions button{padding:.35rem .3rem}
 .sheet{margin-top:1rem;overflow:auto;background:white;border:1px solid #dce2d9;border-radius:12px;padding:.5rem}
 .sheet>svg{display:block;width:100%;min-width:650px;height:auto}
 .measure{cursor:pointer}

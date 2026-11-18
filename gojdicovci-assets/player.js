@@ -97,20 +97,56 @@
   function applyGain(voice) {
     voice.gain?.gain.setTargetAtTime(voice.muted ? 0 : voice.volume, audio.currentTime, .01);
   }
+  let soloVoice = -1;
+  let statesBeforeSolo;
+  const voiceButtons = [];
+  function refreshMixer() {
+    voices.forEach((voice,index) => {
+      const buttons = voiceButtons[index];
+      buttons.volume.value = Math.round(voice.volume*100);
+      buttons.mute.setAttribute('aria-pressed',String(voice.muted));
+      buttons.mute.textContent = t(voice.muted?'unmute':'mute');
+      buttons.mute.setAttribute('aria-label',t(voice.muted?'unmuteVoice':'muteVoice',{voice:groups[index]}));
+      buttons.solo.setAttribute('aria-pressed',String(soloVoice===index));
+      buttons.solo.setAttribute('aria-label',t(soloVoice===index?'exitSoloVoice':'soloVoice',{voice:groups[index]}));
+      applyGain(voice);
+    });
+    draw(playing?now():beat);
+  }
   groups.forEach((name,index)=>{
     const row=document.createElement('div');
     row.className='voice';
-    row.innerHTML=`<label for="voice${index}"></label><input id="voice${index}" type="range" min="0" max="100" value="75"><button type="button" aria-pressed="false">${h('mute')}</button>`;
+    row.innerHTML=`<label for="voice${index}"></label><input id="voice${index}" type="range" min="0" max="100" value="75"><div class="voice-actions"><button type="button" data-mute aria-pressed="false">${h('mute')}</button><button type="button" data-solo aria-pressed="false">${h('soloV1')}</button></div>`;
     row.querySelector('label').textContent=name;
-    const voice=voices[index], volume=row.querySelector('input'), button=row.querySelector('button');
+    const voice=voices[index], volume=row.querySelector('input'), button=row.querySelector('[data-mute]');
+    const solo=row.querySelector('[data-solo]');
+    voiceButtons.push({mute:button,solo,volume});
     button.setAttribute('aria-label',t('muteVoice',{voice:name}));
+    solo.setAttribute('aria-label',t('soloVoice',{voice:name}));
     volume.oninput=()=>{ voice.volume=Number(volume.value)/100; applyGain(voice); };
     button.onclick=()=>{
+      soloVoice=-1;
+      statesBeforeSolo=undefined;
       voice.muted=!voice.muted;
-      button.setAttribute('aria-pressed',String(voice.muted));
-      button.textContent=voice.muted?t('unmute'):t('mute');
-      button.setAttribute('aria-label',t(voice.muted?'unmuteVoice':'muteVoice',{voice:name}));
-      applyGain(voice);
+      refreshMixer();
+    };
+    solo.onclick=()=>{
+      if(soloVoice===index){
+        voices.forEach((item,i)=>{
+          item.muted=statesBeforeSolo[i].muted;
+          item.volume=statesBeforeSolo[i].volume;
+        });
+        soloVoice=-1;
+        statesBeforeSolo=undefined;
+      }else{
+        if(soloVoice===-1) statesBeforeSolo=voices.map(item=>({muted:item.muted,volume:item.volume}));
+        soloVoice=index;
+        voices.forEach((item,i)=>{
+          item.muted=false;
+          item.volume=i===index?statesBeforeSolo[i].volume:.15;
+        });
+      }
+      refreshMixer();
     };
     byId('mixer').append(row);
   });
