@@ -13,6 +13,7 @@ article,.controls{background:#fff;border:1px solid #dce2d9;border-radius:12px;pa
 article h3{margin:0 0 .4rem}
 a{color:#205c43}
 .control-row{display:flex;align-items:center;flex-wrap:wrap;gap:.8rem}
+.control-separator{border:0;border-top:1px solid #dce2d9;margin:1rem 0}
 button,.return-link{font:inherit;border:1px solid #53735f;border-radius:8px;background:#fff;color:#203a30;padding:.35rem .7rem;cursor:pointer}
 .return-link{text-decoration:none}
 #play,button[aria-pressed=true]{background:#25513d;color:white}

@@ -19,6 +19,15 @@
   const h = i18n.html;
   const byId = id => document.getElementById(id);
   i18n.initPage('v1');
+  const separator = () => {
+    const line = document.createElement('hr');
+    line.className = 'control-separator';
+    return line;
+  };
+  byId('position').closest('.control-row').before(separator());
+  const soundLabel = byId('player-sound') ?? document.querySelector('.controls > p:not([id])');
+  if (soundLabel) soundLabel.replaceWith(separator());
+  else byId('mixer').before(separator());
   // Support return links already present in published players.
   for (const control of document.querySelectorAll('button[data-close-player], a.return-link')) {
     const isFloating = control.closest('#floating-controls');
