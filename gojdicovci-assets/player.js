@@ -49,9 +49,10 @@
   const floatingPlay = byId('floating-play');
   const play = byId('play'), tempo = byId('tempo'), position = byId('position');
   const score = document.querySelector('.sheet');
-  const noteHeads = [...score.querySelectorAll('[data-note]')].map(node => ({
-    node, timing: node.dataset.note.split(',').map(Number)
-  }));
+  const noteHeads = [...score.querySelectorAll('[data-note]')].flatMap(node =>
+    (node.dataset.noteTimes || node.dataset.note).split(';').map(value => ({
+      node, timing:value.split(',').map(Number)
+    })));
   const length = Number(position.max);
   const rowForBar = new Map();
   for (const page of score.querySelectorAll('svg')) {
@@ -63,14 +64,19 @@
     }).sort((a,b)=>a-b);
     const staffTops = staffs.filter((y,index) => index === 0 || y-staffs[index-1] > 2);
     const rows = new Map(staffTops.map(y => [y, {page, y}]));
-    for (const node of page.querySelectorAll('[data-bar]')) {
+    const timedNodes = page.querySelectorAll('[data-note-times]');
+    for (const node of timedNodes.length ? timedNodes : page.querySelectorAll('[data-bar]')) {
       const position = node.querySelector('g[transform]')?.transform.baseVal.getItem(0)?.matrix;
       if (!position || !staffTops.length) continue;
       const y = staffTops.reduce((nearest, top) =>
         Math.abs(top + 2 - position.f) < Math.abs(nearest + 2 - position.f) ? top : nearest);
-      const bar = Number(node.dataset.bar);
-      const row = rowForBar.get(bar);
-      if (!row || (row.page === page && y < row.y)) rowForBar.set(bar, rows.get(y));
+      const playbackBars = node.dataset.noteTimes
+        ? node.dataset.noteTimes.split(';').map(value => 1+bars.findLastIndex(start=>start<=Number(value.split(',')[0])+.000001))
+        : [Number(node.dataset.bar)];
+      for (const bar of playbackBars) {
+        const row = rowForBar.get(bar);
+        if (!row || (row.page === page && y < row.y)) rowForBar.set(bar, rows.get(y));
+      }
     }
   }
   let followedRow;
@@ -182,10 +188,11 @@
       byId('bar').textContent=t('barCount',{current:bar,total:bars.length});
     }
     const sounding = [];
+    for (const {node} of noteHeads) node.classList.remove('active');
     for (const {node, timing: [from, to, track]} of noteHeads) {
       const voice = voices[toGroup[track]];
       const active = playing && value >= from && value < to && !voice.muted && voice.volume > 0;
-      node.classList.toggle('active', active);
+      if (active) node.classList.add('active');
       if (follow && active) sounding.push(node);
     }
     if (follow) {
