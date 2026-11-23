@@ -164,6 +164,15 @@
         previous.before(three);
       }
       makeSkip(three,3,'previousThreeBars');
+      // Older cached player scripts only wire the original controls. Delegate
+      // to those controls when no current player handler has been installed.
+      if (!three.dataset.fallbackBound) {
+        three.dataset.fallbackBound='1';
+        three.addEventListener('click',() => {
+          if (three.onclick) return;
+          for (let count=0;count<3;count++) previous.click();
+        });
+      }
       let reset=document.getElementById('floating-reset');
       if (!reset) {
         reset=document.createElement('button');
@@ -174,6 +183,16 @@
       reset.textContent='⏮';
       reset.title=text('reset');
       reset.setAttribute('aria-label',text('reset'));
+      if (!reset.dataset.fallbackBound) {
+        reset.dataset.fallbackBound='1';
+        reset.addEventListener('click',() => {
+          if (reset.onclick) return;
+          const position=document.getElementById('position');
+          if (!position) return;
+          position.value='0';
+          position.dispatchEvent(new Event('input',{bubbles:true}));
+        });
+      }
     }
     const play = document.getElementById('floating-play');
     if (play) {
