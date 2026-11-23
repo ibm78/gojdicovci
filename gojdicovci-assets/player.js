@@ -154,7 +154,7 @@
         soloVoice=index;
         voices.forEach((item,i)=>{
           item.muted=false;
-          item.volume=i===index?statesBeforeSolo[i].volume:.15;
+          item.volume=i===index?statesBeforeSolo[i].volume:.10;
         });
       }
       refreshMixer();

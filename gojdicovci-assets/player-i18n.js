@@ -6,6 +6,7 @@
     play: 'Prehrať',
     pause: 'Pozastaviť',
     close: 'Ukončiť',
+    downloadPdf: 'Stiahnuť PDF',
     reset: 'Od začiatku',
     stop: '⏹ Zastaviť',
     previousBar: 'Predchádzajúci takt',
@@ -139,6 +140,25 @@
     const sheet = document.querySelector('.sheet');
     if (sheet) sheet.setAttribute('aria-label',text('score'));
     document.getElementById('mixer')?.setAttribute('aria-label',text('mixer'));
+    const closeControl=document.querySelector('.controls [data-close-player], .controls a.return-link');
+    if (closeControl) {
+      let download=document.getElementById('download-pdf');
+      if (!download) {
+        download=document.createElement('a');
+        download.id='download-pdf';
+        download.className='pdf-download';
+        closeControl.before(download);
+      }
+      const pdf=new URL(location.href);
+      pdf.search='';
+      pdf.hash='';
+      pdf.pathname=pdf.pathname.replace(/-player(?:AlphaTab)?\.html$/i,'.pdf');
+      download.href=pdf.href;
+      download.download=decodeURIComponent(pdf.pathname.split('/').pop());
+      download.textContent=text('downloadPdf');
+      download.title=text('downloadPdf');
+      download.setAttribute('aria-label',text('downloadPdf'));
+    }
     const floating = document.getElementById('floating-controls');
     if (floating) floating.setAttribute('aria-label',text('playbackControls'));
     const previous = document.getElementById('previous-bar');
