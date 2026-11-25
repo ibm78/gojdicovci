@@ -1,6 +1,12 @@
 'use strict';
 
 (() => {
+  if (!window.__gojdicovciFresh && !window.__gojdicovciRefreshing && location.protocol!=='file:') {
+    const script=document.createElement('script');
+    const root=document.currentScript?.src || new URL('gojdicovci-assets/player-i18n.js',location.href).href;
+    script.src=new URL('fresh-assets.js?_fresh='+Date.now()+'-'+Math.random().toString(36).slice(2),root).href;
+    document.head.append(script);
+  }
   // Texty oboch prehrávačov upravujte tu. Výrazy v {zátvorkách} zachovajte.
   const messages = {
     play: 'Prehrať',
