@@ -1,4 +1,12 @@
 *{box-sizing:border-box}
+@font-face{font-family:webPlayer;src:url("webPlayer.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:GojdicovciLyrics;src:url("C059-Roman.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-024F,U+1E00-1EFF}
+@font-face{font-family:GojdicovciLyrics;src:url("C059-Roman.otf") format("opentype");font-weight:400;font-style:italic;font-display:swap;unicode-range:U+0000-024F,U+1E00-1EFF}
+.sheet .gojdicovci-lyrics-latin,.sheet .gojdicovci-lyrics-latin text{font-family:GojdicovciLyrics,serif!important}
+.web-player-icon{display:inline-block;line-height:1;vertical-align:middle}
+.web-player-font-ready .web-player-icon{font-size:0}
+.web-player-font-ready .web-player-icon::before{content:attr(data-font-code);font-family:webPlayer!important;font-size:1.1rem;font-weight:400;font-style:normal;line-height:1;font-variant:normal;text-transform:none;letter-spacing:normal}
+.web-player-font-ready #floating-controls .web-player-icon::before{font-size:1.35rem}
 body{margin:0;color:#202923;background:transparent;font:1rem/1.55 "DM Sans",system-ui,sans-serif}
 header{background:#203a30;color:#fff;padding:2.5rem max(1rem,calc((100% - 66rem)/2));}
 h1,h2,h3{font-family:Georgia,serif;line-height:1.2}

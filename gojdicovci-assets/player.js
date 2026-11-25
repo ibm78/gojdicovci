@@ -210,7 +210,7 @@
   function updatePlaybackControls() {
     const label = playing ? t('pause') : t('play');
     play.textContent = label;
-    floatingPlay.textContent = playing ? t('pauseSymbol') : t('playSymbol');
+    i18n.setIcon(floatingPlay,playing ? t('pauseSymbol') : t('playSymbol'));
     floatingPlay.setAttribute('aria-label', label);
     floatingPlay.title = label;
     if (playing) {

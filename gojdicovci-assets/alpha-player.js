@@ -95,6 +95,11 @@
   const {musicXml,order,bpm} = JSON.parse(byId('alpha-data').textContent);
   byId('speed').textContent = t('tempoValue',{percent:100,bpm});
   const libraryRoot = 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.8.3/dist/';
+  // Load before measuring lyrics so spacing uses the actual PDF text font.
+  if (document.fonts?.load) {
+    try { await document.fonts.load('12px GojdicovciLyrics','Sláva Tebe'); }
+    catch (cause) { console.warn('GojdicovciLyrics',cause); }
+  }
   const api = new alphaTab.AlphaTabApi(byId('alpha-score'), {
     core:{fontDirectory:libraryRoot+'font/',scriptFile:libraryRoot+'alphaTab.min.js',engine:'svg'},
     display:{staveProfile:alphaTab.StaveProfile.Score,layoutMode:alphaTab.LayoutMode.Page},
@@ -107,6 +112,10 @@
       scrollMode:alphaTab.ScrollMode.OffScreen
     }
   });
+  const lyricFont=api.settings.display.resources.elementFonts.get(alphaTab.NotationElement.EffectLyrics);
+  api.settings.display.resources.elementFonts.set(alphaTab.NotationElement.EffectLyrics,
+    alphaTab.model.Font.withFamilyList(['GojdicovciLyrics',...(lyricFont?.families ?? ['Georgia','serif'])],
+      lyricFont?.size ?? 12,lyricFont?.style,lyricFont?.weight));
   api.error.on(cause => {
     showError(t('errorAlphaLoad'));
     console.warn(t('logAlpha'),cause);
@@ -218,7 +227,7 @@
   api.playerStateChanged.on(event => {
     const playing = event.state === alphaTab.synth.PlayerState.Playing;
     play.textContent = playing?t('pause'):t('play');
-    floatingPlay.textContent = playing?t('pauseSymbol'):t('playSymbol');
+    i18n.setIcon(floatingPlay,playing?t('pauseSymbol'):t('playSymbol'));
     floatingPlay.setAttribute('aria-label',play.textContent);
     floatingPlay.title = play.textContent;
     if (playing) {

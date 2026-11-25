@@ -115,6 +115,21 @@
   const html = (key, values) => text(key,values).replace(/[&<>"']/g, character =>
     ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[character]);
   const voiceNames = () => ['soprano','alto','tenor','bass'].map(key => text(key));
+  const iconCodes = {'▶':'a','⏸':'b','⏴':'c','⏮':'d','⏹':'e','×':'f'};
+  function setIcon(target,symbol) {
+    const span=document.createElement('span');
+    span.className='web-player-icon';
+    span.dataset.fontCode=iconCodes[symbol] ?? '';
+    span.textContent=symbol;
+    span.setAttribute('aria-hidden','true');
+    target.replaceChildren(span);
+  }
+  function loadIconFont() {
+    if (!document.fonts?.load) return;
+    document.fonts.load('16px "webPlayer"','abcdef').then(fonts => {
+      if (fonts.length) document.documentElement.classList.add('web-player-font-ready');
+    }).catch(() => {}); // Original symbols remain available if the font cannot load.
+  }
   const formatDate = date => new Intl.DateTimeFormat(locale, {
     dateStyle:'medium',timeStyle:'medium',timeZone
   }).format(date);
@@ -135,6 +150,13 @@
     if (title) document.title = text('documentTitle',{title:title.textContent});
     setText('#play','play');
     setText('#reset',version === 'v2' ? 'stop' : 'reset');
+    if (version==='v2') {
+      const stop=document.getElementById('reset');
+      if (stop) {
+        setIcon(stop,'⏹');
+        stop.append(document.createTextNode(' '+text('stop').replace(/^⏹\s*/,'')));
+      }
+    }
     setText('label[for="tempo"]','tempo');
     setText('label[for="position"]','position');
     const sheet = document.querySelector('.sheet');
@@ -165,7 +187,7 @@
     if (previous) {
       const makeSkip = (button,count,key) => {
         const icon=document.createElement('span');
-        icon.textContent=text('previousSymbol');
+        setIcon(icon,text('previousSymbol'));
         const label=document.createElement('small');
         label.textContent=String(count);
         button.replaceChildren(icon,label);
@@ -200,7 +222,7 @@
         reset.type='button';
         three.before(reset);
       }
-      reset.textContent='⏮';
+      setIcon(reset,'⏮');
       reset.title=text('reset');
       reset.setAttribute('aria-label',text('reset'));
       if (!reset.dataset.fallbackBound) {
@@ -216,12 +238,13 @@
     }
     const play = document.getElementById('floating-play');
     if (play) {
-      play.textContent = text('playSymbol');
+      setIcon(play,text('playSymbol'));
       play.title = text('play');
       play.setAttribute('aria-label',text('play'));
     }
     for (const button of document.querySelectorAll('[data-close-player], a.return-link')) {
-      button.textContent = button.closest('#floating-controls') ? text('closeSymbol') : text('close');
+      if (button.closest('#floating-controls')) setIcon(button,text('closeSymbol'));
+      else button.textContent=text('close');
       button.title = text('close');
       button.setAttribute('aria-label',text('close'));
     }
@@ -242,6 +265,7 @@
       }
     }
     initDates();
+    loadIconFont();
   }
 
   function initDates() {
@@ -342,5 +366,5 @@
     })();
     return {ready,release};
   }
-  window.GojdicovciI18n = {text,html,voiceNames,initPage,applyBindings,prepareAudio};
+  window.GojdicovciI18n = {text,html,voiceNames,initPage,applyBindings,prepareAudio,setIcon};
 })();
