@@ -402,7 +402,7 @@
       const piano = data ? JSON.parse(data.textContent).pianoSamples.length > 0 : true;
       sound.textContent = text(piano ? 'soundPiano' : 'soundTriangle');
     }
-    const hint = document.querySelector('#nacvik > p');
+    const hint = document.getElementById('player-seek-hint') ?? document.querySelector('#nacvik > .controls ~ p');
     if (hint) hint.textContent = text(version === 'v2' || sheet?.querySelector('[data-bar]') ? 'seekNotes' : 'seekPosition');
     for (const link of document.querySelectorAll('a[href]')) {
       const href = link.getAttribute('href');

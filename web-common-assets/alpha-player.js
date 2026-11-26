@@ -94,7 +94,7 @@
   }
   const {musicXml,order,bpm} = JSON.parse(byId('alpha-data').textContent);
   byId('speed').textContent = t('tempoValue',{percent:100,bpm});
-  const libraryRoot = 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@1.8.3/dist/';
+  const libraryRoot = new URL('alphatab/',assetRoot).href;
   // Load before measuring lyrics so spacing uses the actual PDF text font.
   if (document.fonts?.load) {
     try { await document.fonts.load('12px GojdicovciLyrics','Sláva Tebe'); }
