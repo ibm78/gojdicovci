@@ -182,6 +182,15 @@
     button.id='floating-bar';
     button.type='button';
     floating.querySelector('#floating-reset').before(button);
+    // Row-major DOM order also matches keyboard navigation across the two columns.
+    floating.append(...[
+      floating.querySelector('#floating-reset'),
+      floating.querySelector('[data-close-player],a.return-link'),
+      floating.querySelector('#previous-bar'),
+      button,
+      floating.querySelector('#previous-three-bars'),
+      floating.querySelector('#floating-play')
+    ].filter(Boolean));
     const overlay=document.createElement('div');
     overlay.className='bar-jump-overlay';
     overlay.hidden=true;

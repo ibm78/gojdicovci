@@ -49,7 +49,7 @@ input[type=range]{accent-color:#2e694d;min-width:4em}
 body.embed header,body.embed #uvod,body.embed #repertoar,body.embed #informacie{display:none}
 body.embed #nacvik{margin:1rem 0}
 
-#floating-controls{position:fixed;z-index:10;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));display:grid;gap:.5rem}
+#floating-controls{position:fixed;z-index:10;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(2,3rem);gap:.5rem}
 #floating-controls[hidden]{display:none}
 #floating-controls #floating-bar{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;font-family:inherit;font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums}
 #floating-bar .bar-jump-current{line-height:1}
