@@ -1,5 +1,5 @@
 'use strict';
-// Also invoked by player-i18n.js for existing player pages.
+// Shared by players and repertoire cards, including previously exported pages.
 (() => {
   if (window.__gojdicovciFresh || window.__gojdicovciRefreshing || location.protocol==='file:') return;
   window.__gojdicovciRefreshing=true;
@@ -43,8 +43,15 @@
     } catch (error) {
       window.__gojdicovciRefreshing=false;
       console.error('Gojdičovci: obnovenie súborov zlyhalo.',error);
-      const status=document.getElementById('error');
-      if (status) {status.hidden=false;status.textContent='Aktuálny obsah sa nepodarilo načítať. Skontrolujte internet a obnovte stránku.';}
+      let status=document.getElementById('error');
+      if (!status) {
+        status=document.createElement('p');
+        status.id='fresh-assets-error';
+        status.setAttribute('role','status');
+        (document.querySelector('main') || document.body).prepend(status);
+      }
+      status.hidden=false;
+      status.textContent='Aktuálny obsah sa nepodarilo načítať. Skontrolujte internet a obnovte stránku.';
     }
   }
   // Let the first document finish initialization before replacing it.

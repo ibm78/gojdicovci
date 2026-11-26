@@ -22,7 +22,7 @@
     cancel: 'Zrušiť',
     setBar: 'Nastav takt',
     invalidBar: 'Zadajte celé číslo taktu od 1.',
-    jumpToCurrentBar: 'Takt {current}. Preskočiť do taktu',
+    jumpToCurrentBar: 'Takt {current} z {total}. Preskočiť do taktu',
     playSymbol: '▶',
     pauseSymbol: '⏸',
     closeSymbol: '×',
@@ -151,14 +151,27 @@
       if (fonts.length) document.documentElement.classList.add('web-player-font-ready');
     }).catch(() => {}); // Original symbols remain available if the font cannot load.
   }
+  let barJumpTotal=()=>0;
   function updateBarJump(current) {
     const button=document.getElementById('floating-bar');
     if (!button) return;
-    button.textContent=String(current);
+    let currentLabel=button.querySelector('.bar-jump-current');
+    let totalLabel=button.querySelector('.bar-jump-total');
+    if (!currentLabel || !totalLabel) {
+      currentLabel=document.createElement('span');
+      currentLabel.className='bar-jump-current';
+      totalLabel=document.createElement('small');
+      totalLabel.className='bar-jump-total';
+      button.replaceChildren(currentLabel,totalLabel);
+    }
+    const total=barJumpTotal();
+    currentLabel.textContent=String(current);
+    totalLabel.textContent=total ? String(total) : '–';
     button.title=text('jumpToBar');
-    button.setAttribute('aria-label',text('jumpToCurrentBar',{current}));
+    button.setAttribute('aria-label',text('jumpToCurrentBar',{current,total:total || '–'}));
   }
   function installBarJump(actions) {
+    barJumpTotal=actions.total;
     const floating=document.getElementById('floating-controls');
     const button=document.createElement('button');
     button.id='floating-bar';

@@ -1,3 +1,9 @@
+if (!window.__gojdicovciFresh && !window.__gojdicovciRefreshing && location.protocol!=='file:') {
+  const loader=document.createElement('script');
+  loader.src=new URL('fresh-assets.js?_fresh='+Date.now()+'-'+Math.random().toString(36).slice(2),document.currentScript.src).href;
+  document.head.append(loader);
+}
+
 // Load the same icon font as the players, with a fresh URL on every opening.
 // Keep the CSS-drawn icons if loading fails.
 if (window.FontFace && document.fonts) {

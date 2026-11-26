@@ -223,6 +223,7 @@
     byId('position').max = api.endTick;
     for (const element of controls.querySelectorAll('[data-ready]')) element.disabled = false;
     applyMix();
+    i18n.updateBarJump(currentBarNumber());
   });
   api.playerStateChanged.on(event => {
     const playing = event.state === alphaTab.synth.PlayerState.Playing;
