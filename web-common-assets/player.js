@@ -48,7 +48,7 @@
     });
   }
 
-  const {tracks, pianoSamples, bars, bpm, toGroup} = JSON.parse(document.getElementById('song-data').textContent);
+  const {tracks, pianoSamples, bars, bpm, toGroup,barNumbers=bars.map((_,index)=>index+1)} = JSON.parse(document.getElementById('song-data').textContent);
   let piano;
   const groups = i18n.voiceNames();
   const floatingPlay = byId('floating-play');
@@ -270,7 +270,7 @@
     const changedBar = bar !== currentBar;
     if (changedBar) {
       currentBar = bar;
-      byId('bar').textContent=t('barCount',{current:bar,total:bars.length});
+      byId('bar').textContent=t('barCount',{current:barNumbers[bar-1],total:bars.length});
     }
     const sounding = [];
     for (const {node} of noteHeads) node.classList.remove('active');
@@ -419,6 +419,7 @@
   byId('floating-reset').onclick = () => seek(0);
   i18n.installBarJump({
     total:()=>bars.length,
+    numbers:()=>barNumbers,
     current:()=>1+Math.max(0,bars.findLastIndex(from=>from<=(playing?now():beat))),
     isPlaying:()=>playing,
     pause:()=>pause(),

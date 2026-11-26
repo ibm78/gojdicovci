@@ -21,7 +21,8 @@
     barField: 'Takt',
     cancel: 'Zrušiť',
     setBar: 'Nastav takt',
-    invalidBar: 'Zadajte celé číslo taktu od 1.',
+    invalidBar: 'Zadajte celé číslo taktu od {minimum}.',
+    missingBar: 'Takt {number} v notovom zápise neexistuje.',
     jumpToCurrentBar: 'Takt {current} z {total}. Preskočiť do taktu',
     playSymbol: '▶',
     pauseSymbol: '⏸',
@@ -152,6 +153,7 @@
     }).catch(() => {}); // Original symbols remain available if the font cannot load.
   }
   let barJumpTotal=()=>0;
+  let barJumpNumbers=()=>[];
   function updateBarJump(current) {
     const button=document.getElementById('floating-bar');
     if (!button) return;
@@ -165,13 +167,16 @@
       button.replaceChildren(currentLabel,totalLabel);
     }
     const total=barJumpTotal();
-    currentLabel.textContent=String(current);
+    const printed=barJumpNumbers()[current-1] ?? current;
+    currentLabel.textContent=String(printed);
     totalLabel.textContent=total ? String(total) : '–';
     button.title=text('jumpToBar');
-    button.setAttribute('aria-label',text('jumpToCurrentBar',{current,total:total || '–'}));
+    button.setAttribute('aria-label',text('jumpToCurrentBar',{current:printed,total:total || '–'}));
   }
   function installBarJump(actions) {
     barJumpTotal=actions.total;
+    barJumpNumbers=actions.numbers ?? (()=>[]);
+    const numbers=()=>actions.numbers?.() || Array.from({length:actions.total()},(_,index)=>index+1);
     const floating=document.getElementById('floating-controls');
     const button=document.createElement('button');
     button.id='floating-bar';
@@ -208,7 +213,8 @@
       wasPlaying=actions.isPlaying();
       actions.pause();
       previousFocus=document.activeElement;
-      input.value=String(actions.current());
+      input.min=String(Math.min(...numbers()));
+      input.value=String(numbers()[actions.current()-1] ?? actions.current());
       error.hidden=true;
       input.removeAttribute('aria-invalid');
       overlay.hidden=false;
@@ -223,10 +229,17 @@
     form.noValidate=true;
     form.onsubmit=event=>{
       event.preventDefault();
-      if (!/^\d+$/.test(input.value) || Number(input.value)<1) {
-        error.textContent=text('invalidBar');error.hidden=false;input.setAttribute('aria-invalid','true');input.focus();return;
+      const labels=numbers(),minimum=Math.min(...labels);
+      if (!/^\d+$/.test(input.value) || !Number.isSafeInteger(Number(input.value)) || Number(input.value)<minimum) {
+        error.textContent=text('invalidBar',{minimum});error.hidden=false;input.setAttribute('aria-invalid','true');input.focus();return;
       }
-      const target=Math.min(Number(input.value),actions.total());
+      const requested=Number(input.value);
+      const matches=labels.flatMap((label,index)=>label===requested?[index]:[]);
+      const target=requested>Math.max(...labels) ? labels.length
+        : 1+(matches.find(index=>index>=actions.current()-1) ?? matches[0] ?? -1);
+      if (!target) {
+        error.textContent=text('missingBar',{number:requested});error.hidden=false;input.setAttribute('aria-invalid','true');input.focus();return;
+      }
       close();
       actions.seek(target);
       resume();
