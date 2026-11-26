@@ -1,0 +1,17 @@
+webPlayer — symboly prehravacov
+Zdroj: Font Awesome Free 6.7.2, SIL OFL 1.1. Upravena a premenovana podmnozina.
+
+a = Prehrat (play)
+b = Pozastavit (pause)
+c = Dozadu (cislo taktu zostava bezny text)
+d = Od zaciatku (step-backward)
+e = Zastavit (stop)
+f = Ukoncit (close)
+g = Stiahnut subor (download)
+h = Tempo (gauge-high)
+i = Hlasitost (volume-high)
+j = Stisit (volume-xmark)
+k = Solo (bullseye)
+l = Nová hodnota (pen-to-square)
+
+Pri publikovani prilozte webPlayer-LICENSE.txt.

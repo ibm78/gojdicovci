@@ -1,0 +1,81 @@
+*{box-sizing:border-box}
+@font-face{font-family:webPlayer;src:url("webPlayer.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:GojdicovciLyrics;src:url("C059-Roman.otf") format("opentype");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-024F,U+1E00-1EFF}
+@font-face{font-family:GojdicovciLyrics;src:url("C059-Roman.otf") format("opentype");font-weight:400;font-style:italic;font-display:swap;unicode-range:U+0000-024F,U+1E00-1EFF}
+.sheet .gojdicovci-lyrics-latin,.sheet .gojdicovci-lyrics-latin text{font-family:GojdicovciLyrics,serif!important}
+.web-player-icon{display:inline-block;line-height:1;vertical-align:middle}
+.web-player-font-ready .web-player-icon{font-size:0}
+.web-player-font-ready .web-player-icon::before{content:attr(data-font-code);font-family:webPlayer!important;font-size:1.1rem;font-weight:400;font-style:normal;line-height:1;font-variant:normal;text-transform:none;letter-spacing:normal}
+.web-player-font-ready #floating-controls .web-player-icon::before{font-size:1.35rem}
+body{margin:0;color:#202923;background:transparent;font:1rem/1.55 "DM Sans",system-ui,sans-serif}
+header{background:#203a30;color:#fff;padding:2.5rem max(1rem,calc((100% - 66rem)/2));}
+h1,h2,h3{font-family:Georgia,serif;line-height:1.2}
+h1{font-size:clamp(2.5rem,8vw,5rem);margin:0}
+header p{margin:.5rem 0 1.5rem}
+nav{display:flex;flex-wrap:wrap;gap:1.2rem}
+nav a{color:#fff}
+main{max-width:68rem;margin:auto;padding:0 1rem 2rem}
+section{margin:2.5rem 0}
+h2{font-size:2rem;margin-bottom:.7rem}
+article,.controls{background:#fff;border:1px solid #dce2d9;border-radius:12px;padding:1rem}
+article h3{margin:0 0 .4rem}
+a{color:#205c43}
+.control-row{display:flex;align-items:center;flex-wrap:wrap;gap:.8rem}
+.tempo-group{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;border:1px solid #53735f;border-radius:8px;padding:.35rem .7rem;max-width:100%;min-width:0}
+.tempo-group input{flex:1;min-width:4rem;max-width:100%}
+.tempo-group output{white-space:nowrap}
+.volume-control{display:flex;align-items:center;gap:.4rem;margin:.35rem 0 .75rem}
+.volume-control input{min-width:0;flex:1}
+.control-separator{border:0;border-top:1px solid #dce2d9;margin:1rem 0}
+button,.return-link{font:inherit;border:1px solid #53735f;border-radius:8px;background:#fff;color:#203a30;padding:.35rem .7rem;cursor:pointer}
+.return-link{text-decoration:none}
+.pdf-download{display:inline-block;font:inherit;border:1px solid #53735f;border-radius:8px;background:#fff;color:#203a30;padding:.35rem .7rem;text-decoration:none;cursor:pointer}
+.pdf-download:focus-visible{outline:2px solid #203a30;outline-offset:2px}
+#play,button[aria-pressed=true]{background:#25513d;color:white}
+input[type=range]{accent-color:#2e694d;min-width:4em}
+#position{flex:1}
+.mixer{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.7rem;margin:1rem 0 0}
+.voice{padding:.6rem;background:#eef2ec;border-radius:8px}
+.voice label{display:block;font-weight:650}
+.voice input{width:100%}
+.voice button{width:100%}
+.voice-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.35rem}
+.voice-actions button{padding:.35rem .3rem}
+.sheet{margin-top:1rem;overflow:auto;background:white;border:1px solid #dce2d9;border-radius:12px;padding:.5rem}
+.sheet>svg{display:block;width:100%;min-width:650px;height:auto}
+.measure{cursor:pointer}
+[data-note].active path[fill="currentColor"]{fill:#d31221!important;forced-color-adjust:none}
+body.embed header,body.embed #uvod,body.embed #repertoar,body.embed #informacie{display:none}
+body.embed #nacvik{margin:1rem 0}
+
+#floating-controls{position:fixed;z-index:10;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));display:grid;gap:.5rem}
+#floating-controls[hidden]{display:none}
+#floating-controls #floating-bar{font-family:inherit;font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums}
+.bar-jump-overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;overflow:auto;background:rgba(0,0,0,.5);padding:1rem;padding-bottom:max(1rem,env(safe-area-inset-bottom))}
+.bar-jump-overlay[hidden]{display:none}
+.bar-jump-dialog{width:min(26rem,100%);max-height:calc(100dvh - 2rem);overflow:auto;margin:auto;background:#fff;color:#203a30;border:1px solid #53735f;border-radius:12px;padding:1.25rem;box-shadow:0 8px 32px #0005}
+.bar-jump-dialog h3{margin:0 0 1rem;font-size:1.3rem}
+.bar-jump-dialog label{display:block;margin-bottom:.35rem;font-weight:650}
+.bar-jump-dialog input{width:100%;font:inherit;font-size:1rem;padding:.5rem;border:1px solid #53735f;border-radius:8px}
+.bar-jump-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
+#bar-jump-error{color:#a31515}
+#floating-controls :is(button,.return-link){width:3rem;height:3rem;padding:0;border-radius:50%;background:rgba(32,58,48,.72);color:#fff;font-size:1.35rem;line-height:1;box-shadow:0 2px 8px #0003}
+#floating-controls .return-link{display:grid;place-items:center}
+#floating-controls button.floating-skip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;font-size:1.25rem}
+#floating-controls button.floating-skip small{font-size:.7rem;font-weight:700;line-height:1}
+#floating-controls :is(button,.return-link):is(:hover,:focus-visible){background:#203a30}
+#floating-controls :is(button,.return-link):focus-visible{outline:3px solid #fff;outline-offset:2px}
+#floating-controls:not([hidden]){animation:floating-controls-arrive 2s ease-in-out 1}
+#floating-controls:not([hidden]) :is(button,.return-link){animation:floating-controls-highlight 3.1s linear 1}
+@keyframes floating-controls-arrive{
+  from{right:50%;bottom:50%;transform:translate(50%,50%)}
+  to{right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));transform:translate(0,0)}
+}
+@keyframes floating-controls-highlight{
+  0%,100%{box-shadow:0 2px 8px #0003}
+  3.225806%{box-shadow:0 2px 8px #0003,0 0 0 4px rgba(235,35,35,.95),0 0 24px 8px rgba(235,35,35,.8)}
+}
+@media(prefers-reduced-motion:reduce){
+  #floating-controls:not([hidden]),#floating-controls:not([hidden]) :is(button,.return-link){animation:none}
+}
+body.following{padding-bottom:100vh}
