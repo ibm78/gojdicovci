@@ -59,6 +59,76 @@
       node, timing:value.split(',').map(Number)
     })));
   const length = Number(position.max);
+  function createMeasureHighlights() {
+    const regions=new Map(),rectangles=[];
+    const svgNS='http://www.w3.org/2000/svg';
+    const bounds=(node,page)=>{
+      const box=node.getBBox();
+      const matrix=page.getCTM().inverse().multiply(node.getCTM());
+      const point=page.createSVGPoint();
+      const corners=[[box.x,box.y],[box.x+box.width,box.y],[box.x,box.y+box.height],[box.x+box.width,box.y+box.height]]
+        .map(([x,y])=>{point.x=x;point.y=y;return point.matrixTransform(matrix);});
+      return {left:Math.min(...corners.map(p=>p.x)),right:Math.max(...corners.map(p=>p.x)),top:Math.min(...corners.map(p=>p.y)),bottom:Math.max(...corners.map(p=>p.y))};
+    };
+    for (const page of score.querySelectorAll('svg')) {
+      const systems=new Map();
+      for (const node of page.querySelectorAll('[data-score-system]')) {
+        let box;
+        try {box=bounds(node,page);} catch {continue;}
+        const id=node.dataset.scoreSystem;
+        if (!systems.has(id)) systems.set(id,{left:Infinity,right:-Infinity,top:Infinity,bottom:-Infinity,lines:[]});
+        const system=systems.get(id);
+        system.left=Math.min(system.left,box.left);system.right=Math.max(system.right,box.right);
+        system.top=Math.min(system.top,box.top);system.bottom=Math.max(system.bottom,box.bottom);
+        if (node.classList.contains('score-barline')) system.lines.push(box.left);
+      }
+      for (const system of systems.values()) {
+        system.lines.sort((a,b)=>a-b);
+        system.lines=system.lines.filter((value,index,list)=>!index || value-list[index-1]>.5);
+        system.regions=new Map();
+      }
+      for (const anchor of page.querySelectorAll('[data-note]')) {
+        const head=anchor.closest('.score-notehead[data-score-system]') || anchor.querySelector('.score-notehead[data-score-system]');
+        const system=head && systems.get(head.dataset.scoreSystem);
+        if (!system || !system.lines.length) continue;
+        let box;
+        try {box=bounds(head,page);} catch {continue;}
+        const x=(box.left+box.right)/2;
+        const left=system.lines.findLast(value=>value<x-.05) ?? system.left;
+        const right=system.lines.find(value=>value>x+.05) ?? system.right;
+        if (right<=left) continue;
+        const key=left+':'+right;
+        let rect=system.regions.get(key);
+        if (!rect) {
+          rect=document.createElementNS(svgNS,'rect');
+          rect.setAttribute('class','current-measure-highlight');
+          rect.setAttribute('x',left);rect.setAttribute('y',system.top-2);
+          rect.setAttribute('width',right-left);rect.setAttribute('height',system.bottom-system.top+4);
+          rect.setAttribute('aria-hidden','true');
+          rect.style.opacity='0';
+          page.prepend(rect);rectangles.push(rect);system.regions.set(key,rect);
+        }
+        for (const timing of (anchor.dataset.noteTimes || anchor.dataset.note).split(';')) {
+          const from=Number(timing.split(',')[0]);
+          const bar=1+Math.max(0,bars.findLastIndex(start=>start<=from+.000001));
+          if (!regions.has(bar)) regions.set(bar,new Set());
+          regions.get(bar).add(rect);
+        }
+      }
+    }
+    let visible=new Set();
+    return bar=>{
+      const next=regions.get(bar) ?? new Set();
+      for (const rect of visible) if (!next.has(rect)) rect.style.opacity='0';
+      for (const rect of next) if (!visible.has(rect)) rect.style.opacity='1';
+      visible=next;
+    };
+  }
+  let measurePainter;
+  const highlightMeasure=bar=>{
+    if (!measurePainter && bar) measurePainter=createMeasureHighlights();
+    measurePainter?.(bar);
+  };
   const rowForBar = new Map();
   for (const page of score.querySelectorAll('svg')) {
     const staffs = [...page.querySelectorAll('line')].flatMap(line => {
@@ -98,7 +168,7 @@
     const matrix = row.page.getScreenCTM();
     if (!matrix) return;
     const top = point.matrixTransform(matrix).y;
-    window.scrollTo({top: window.scrollY + top - 14, behavior:'instant'});
+    window.scrollTo({top: window.scrollY + top - 35, behavior:'instant'});
   }
   const voices = groups.map(() => ({volume:.75, muted:false, gain:null}));
   let audio, scheduled=[], start=0, beat=0, playing=false, frame, currentBar=0, busy=false;
@@ -195,6 +265,7 @@
   function draw(value, follow=false) {
     position.value=value;
     const bar=1+Math.max(0,bars.findLastIndex(start=>start<=value));
+    highlightMeasure(playing ? bar : 0);
     i18n.updateBarJump(bar);
     const changedBar = bar !== currentBar;
     if (changedBar) {

@@ -45,6 +45,7 @@ input[type=range]{accent-color:#2e694d;min-width:4em}
 .sheet>svg{display:block;width:100%;min-width:650px;height:auto}
 .measure{cursor:pointer}
 [data-note].active path[fill="currentColor"]{fill:#d31221!important;forced-color-adjust:none}
+.current-measure-highlight{fill:#25513d;fill-opacity:.10;stroke:none;pointer-events:none;opacity:0;transition:opacity 150ms ease-in-out}
 body.embed header,body.embed #uvod,body.embed #repertoar,body.embed #informacie{display:none}
 body.embed #nacvik{margin:1rem 0}
 
